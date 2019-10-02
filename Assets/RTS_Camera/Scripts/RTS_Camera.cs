@@ -284,7 +284,7 @@ namespace RTS_Cam
 
             if (useMouseRotation && Input.GetKey(mouseRotationKey))
             {
-                m_Transform.Rotate(Vector3.up, -MouseAxis.x * Time.deltaTime * mouseRotationSpeed, Space.World);
+                m_Transform.Rotate(Vector3.up, MouseAxis.x * Time.deltaTime * mouseRotationSpeed, Space.World);
                 m_Transform.Rotate(Vector3.right, -MouseAxis.y * Time.deltaTime * mouseRotationSpeed, Space.Self);
             }
                

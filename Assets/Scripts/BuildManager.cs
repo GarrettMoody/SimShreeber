@@ -4,23 +4,19 @@ using UnityEngine;
 
 public class BuildManager : MonoBehaviour
 {
-    //Public
+	//Public
     public GameObject wall;
+	public ToolbarMenus toolbarMenus;
+	public float gridSize = .1f;
 
     //Private
-    private GameObject objectInHand;
+    private GameObject objectInHand;    
     private bool isBuilding;
     private bool twoStepBuild;
     private bool firstStep;
     private Vector3 startingBuildPosition;
     private Transform startingBuildTransform;
     private Vector3 endingBuildPosition;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
     // Update is called once per frame
     void Update()
@@ -34,7 +30,8 @@ public class BuildManager : MonoBehaviour
                 // Does the ray intersect any objects excluding the player layer
                 if (Physics.Raycast(ray, out hit, Mathf.Infinity))
                 {
-                    objectInHand.transform.position = new Vector3(hit.point.x, hit.point.y * 2, hit.point.z);
+                    Vector3 gridPoint = GetClosetGridPoint(hit.point);
+                    objectInHand.transform.position = new Vector3(gridPoint.x, gridPoint.y, gridPoint.z);
 
                     if (Input.GetMouseButtonDown(0))
                     {
@@ -56,11 +53,20 @@ public class BuildManager : MonoBehaviour
                 // Does the ray intersect any objects excluding the player layer
                 if (Physics.Raycast(ray, out hit, Mathf.Infinity))
                 {
-                    float distance = Vector3.Distance(startingBuildPosition, hit.point);
-                    Vector3 averagePoint = (startingBuildPosition + hit.point) / 2;
-                    objectInHand.transform.position = new Vector3(averagePoint.x, startingBuildPosition.y, averagePoint.z);
+                    Vector3 gridPoint = GetClosetGridPoint(hit.point);
+                    float distance = Vector3.Distance(startingBuildPosition, gridPoint);
+                    if (distance == 0f)
+                    {
+                        distance = .1f;
+                    } else
+                    {
+                        distance += .1f;
+                    }
+                    Debug.Log("Start:" + startingBuildPosition + '\t' + "End:" + gridPoint + '\t' + "Distance:" + distance);
+                    Vector3 averagePoint = (startingBuildPosition + gridPoint) / 2;
                     objectInHand.transform.localScale = new Vector3(wall.transform.localScale.x, wall.transform.localScale.y, distance);
-                    objectInHand.transform.LookAt(new Vector3(hit.point.x, objectInHand.transform.position.y, hit.point.z));
+					objectInHand.transform.position = new Vector3(averagePoint.x, startingBuildPosition.y, averagePoint.z);
+					objectInHand.transform.LookAt(new Vector3(gridPoint.x, objectInHand.transform.position.y, gridPoint.z));
                     //objectInHand.transform.position = startingBuildPosition + distance / 2 * startingBuildTransform.forward;
                     if (Input.GetMouseButtonDown(0))
                     {
@@ -76,8 +82,19 @@ public class BuildManager : MonoBehaviour
     public void OnWallButtonClicked()
     {
         objectInHand = Instantiate(wall);
+		toolbarMenus.CloseAllMenus();
         isBuilding = true;
         firstStep = true;
         twoStepBuild = true;
+    }
+
+    public Vector3 GetClosetGridPoint(Vector3 point)
+    {
+        float xPoint = Mathf.RoundToInt(point.x / gridSize);
+        float yPoint = Mathf.RoundToInt(point.y / gridSize);
+        float zPoint = Mathf.RoundToInt(point.z / gridSize);
+
+        return new Vector3(xPoint * gridSize, yPoint * gridSize, zPoint * gridSize);
+
     }
 }

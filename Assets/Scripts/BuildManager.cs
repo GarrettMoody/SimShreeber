@@ -26,7 +26,10 @@ public class BuildManager : MonoBehaviour
         {
             if(Input.GetMouseButtonDown(0))
             {
-                Destroy(GetMousePointGameObject());
+                if(GetMousePointGameObject().name != "Floor")
+                {
+                    Destroy(GetMousePointGameObject());
+                }
             }
         }
     }

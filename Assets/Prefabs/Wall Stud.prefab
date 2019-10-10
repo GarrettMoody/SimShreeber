@@ -19,10 +19,30 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 309903047778359067, guid: 05d6c78cb8e2c44aebe73037196cc481,
+        type: 3}
+      propertyPath: m_Size.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 309903047778359067, guid: 05d6c78cb8e2c44aebe73037196cc481,
+        type: 3}
+      propertyPath: m_Size.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 309903047778359067, guid: 05d6c78cb8e2c44aebe73037196cc481,
+        type: 3}
+      propertyPath: m_Size.z
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 3202020909156440694, guid: 05d6c78cb8e2c44aebe73037196cc481,
         type: 3}
       propertyPath: m_Name
       value: Wall Stud
+      objectReference: {fileID: 0}
+    - target: {fileID: 3202020909156440694, guid: 05d6c78cb8e2c44aebe73037196cc481,
+        type: 3}
+      propertyPath: m_TagString
+      value: WallStud
       objectReference: {fileID: 0}
     - target: {fileID: 3202020909156440682, guid: 05d6c78cb8e2c44aebe73037196cc481,
         type: 3}

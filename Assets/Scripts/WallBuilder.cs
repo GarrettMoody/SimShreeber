@@ -31,15 +31,19 @@ public class WallBuilder : MonoBehaviour
             {
                 Vector3 mousePoint = buildManager.GetMousePoint();
                 GameObject mouseObject = buildManager.GetMousePointGameObject();
-                if (mouseObject.tag == "Wall")
+
+                //If pointing to a wall
+                if (IsWall(mouseObject))
                 {
                     wallStart.gameObject.SetActive(true);
                     wallStart.transform.position = new Vector3(mousePoint.x, buildManager.GetMousePointGameObject().transform.position.y, mousePoint.z);
                 }
-                else if (mouseObject.tag == "WallStud")
+                //If pointing to a wall stud
+                else if (IsWallStud(mouseObject))
                 {
                     wallStart.gameObject.SetActive(false);
                 }
+                //Pointing to anything else
                 else
                 {
                     wallStart.gameObject.SetActive(true);
@@ -50,14 +54,15 @@ public class WallBuilder : MonoBehaviour
             else
             {
                 GameObject mouseObject = buildManager.GetMousePointGameObject();
+                Vector3 mousePoint = buildManager.GetMousePoint();
+
                 //If pointing to another wall
-                if(mouseObject.tag == "Wall")
+                if (IsWall(mouseObject))
                 {
                     wallEnd.gameObject.SetActive(true);
-                    Vector3 mousePoint = buildManager.GetMousePoint();
                     wallEnd.transform.position = new Vector3(mousePoint.x, buildManager.GetMousePointGameObject().transform.position.y, mousePoint.z);
                 }
-                else if (mouseObject.tag == "WallStud")
+                else if (IsWallStud(mouseObject))
                 {
                     wallEnd.gameObject.SetActive(false);
                     wallEnd.transform.position = mouseObject.transform.position;
@@ -68,14 +73,7 @@ public class WallBuilder : MonoBehaviour
                     wallEnd.transform.position = buildManager.GetMousePoint();
                     wallEnd.transform.LookAt(wallStart.transform);
                 }
-
-                //Update Wall
-                wallStart.transform.LookAt(wallEnd.transform);
-                
-                float distance = Vector3.Distance(wallStart.transform.position, wallEnd.transform.position);
-                wall.transform.position = wallStart.transform.position + distance / 2 * wallStart.transform.forward;
-                wall.transform.LookAt(wallStart.transform);
-                wall.transform.localScale = new Vector3(wall.transform.localScale.x, wall.transform.localScale.y, distance - .1f);
+                UpdateWall();
             }
 
             if (Input.GetMouseButtonDown(0))
@@ -84,7 +82,8 @@ public class WallBuilder : MonoBehaviour
                 {
                     GameObject mouseObject = buildManager.GetMousePointGameObject();
 
-                    if(mouseObject.tag == "Wall")
+                    //Started on Wall
+                    if(IsWall(mouseObject))
                     {
                         //Pointing to wall. Split wall and place new stud
                         Wall mouseWall = buildManager.GetMousePointGameObject().GetComponent<Wall>();
@@ -92,65 +91,34 @@ public class WallBuilder : MonoBehaviour
                         WallStud previousWallEnd = mouseWall.wallEnd;
 
                         //Create new walls
-                        Wall newWall1 = Instantiate(wallPrefab);
-                        newWall1.wallStart = previousWallStart;
-                        newWall1.wallEnd = wallStart;
-                        newWall1.wallStart.transform.LookAt(newWall1.wallEnd.transform);
-                        newWall1.wallEnd.transform.LookAt(newWall1.wallStart.transform);
-                        float distance = Vector3.Distance(newWall1.wallStart.transform.position, newWall1.wallEnd.transform.position);
-                        newWall1.transform.position = newWall1.wallStart.transform.position + distance / 2 * newWall1.wallStart.transform.forward;
-                        newWall1.transform.LookAt(newWall1.wallStart.transform);
-                        newWall1.transform.localScale = new Vector3(newWall1.transform.localScale.x, newWall1.transform.localScale.y, distance - .1f);
+                        CreateNewWall(previousWallStart, wallStart);
+                        CreateNewWall(wallStart, previousWallEnd);
 
-                        //Create second wall
-                        Wall newWall2 = Instantiate(wallPrefab);
-                        newWall2.wallStart = wallStart;
-                        newWall2.wallEnd = previousWallEnd;
-                        newWall2.wallStart.transform.LookAt(newWall2.wallEnd.transform);
-                        newWall2.wallEnd.transform.LookAt(newWall2.wallStart.transform);
-                        distance = Vector3.Distance(newWall2.wallStart.transform.position, newWall2.wallEnd.transform.position);
-                        newWall2.transform.position = newWall2.wallStart.transform.position + distance / 2 * newWall2.wallStart.transform.forward;
-                        newWall2.transform.LookAt(newWall2.wallStart.transform);
-                        newWall2.transform.localScale = new Vector3(newWall2.transform.localScale.x, newWall2.transform.localScale.y, distance - .1f);
-
-                        //Place wall and continue building
-                        newWall1.GetComponent<BoxCollider>().enabled = true;
-                        newWall2.GetComponent<BoxCollider>().enabled = true;
-                        newWall1.wallStart.GetComponent<BoxCollider>().enabled = true;
-                        newWall1.wallEnd.GetComponent<BoxCollider>().enabled = true;
-                        newWall2.wallEnd.GetComponent<BoxCollider>().enabled = true;
-                        wallStart.GetComponent<BoxCollider>().enabled = true;
-                        wall = Instantiate(wallPrefab);
-                        wallEnd = Instantiate(wallStudPrefab);
-                        wallEnd.transform.position = buildManager.GetMousePoint();
+                        SetStart(wallStart);
+                        //Destroy the old wall that used to be there
                         Destroy(mouseWall.gameObject);
                     }
-                    else if (mouseObject.tag == "WallStud")
+                    //Started on Stud
+                    else if (IsWallStud(mouseObject))
                     {
                         Destroy(wallStart.gameObject);
-                        wallStart = mouseObject.GetComponent<WallStud>();
-                        wallEnd = Instantiate(wallStudPrefab);
-                        wall = Instantiate(wallPrefab);
-                        wall.wallStart = wallStart;
-                        wall.transform.position = buildManager.GetMousePoint();
-                        wallEnd.transform.position = buildManager.GetMousePoint();
-
-                    } else
+                        SetStart(mouseObject.GetComponent<WallStud>());
+                    }
+                    //Started on anything else
+                    else
                     {
-                        //Set the starting position
-                        wallStart.GetComponent<BoxCollider>().enabled = true;
-                        wallEnd = Instantiate(wallStudPrefab);
-                        wall = Instantiate(wallPrefab);
-                        wall.wallStart = wallStart;
-                        wall.transform.position = buildManager.GetMousePoint();
-                        wallEnd.transform.position = buildManager.GetMousePoint();
+                        SetStart(wallStart);
                     }
 
                     startSet = true;
                 }
+                //Build has started
                 else
                 {
-                    if(buildManager.GetMousePointGameObject().tag == "Wall")
+                    GameObject mouseObject = buildManager.GetMousePointGameObject();
+
+                    //Ended on Wall
+                    if(IsWall(mouseObject))
                     {
                         //Pointing to wall. Split wall and place new stud
                         Wall mouseWall = buildManager.GetMousePointGameObject().GetComponent<Wall>();
@@ -158,73 +126,26 @@ public class WallBuilder : MonoBehaviour
                         WallStud previousWallEnd = mouseWall.wallEnd;
 
                         //Create new walls
-                        Wall newWall1 = Instantiate(wallPrefab);
-                        newWall1.wallStart = previousWallStart;
-                        newWall1.wallEnd = wallEnd;
-                        newWall1.wallStart.transform.LookAt(newWall1.wallEnd.transform);
-                        newWall1.wallEnd.transform.LookAt(newWall1.wallStart.transform);
-                        float distance = Vector3.Distance(newWall1.wallStart.transform.position, newWall1.wallEnd.transform.position);
-                        newWall1.transform.position = newWall1.wallStart.transform.position + distance / 2 * newWall1.wallStart.transform.forward;
-                        newWall1.transform.LookAt(newWall1.wallStart.transform);
-                        newWall1.transform.localScale = new Vector3(newWall1.transform.localScale.x, newWall1.transform.localScale.y, distance - .1f);
-
-                        //Create second wall
-                        Wall newWall2 = Instantiate(wallPrefab);
-                        newWall2.wallStart = wallEnd;
-                        newWall2.wallEnd = previousWallEnd;
-                        newWall2.wallStart.transform.LookAt(newWall2.wallEnd.transform);
-                        newWall2.wallEnd.transform.LookAt(newWall2.wallStart.transform);
-                        distance = Vector3.Distance(newWall2.wallStart.transform.position, newWall2.wallEnd.transform.position);
-                        newWall2.transform.position = newWall2.wallStart.transform.position + distance / 2 * newWall2.wallStart.transform.forward;
-                        newWall2.transform.LookAt(newWall2.wallStart.transform);
-                        newWall2.transform.localScale = new Vector3(newWall2.transform.localScale.x, newWall2.transform.localScale.y, distance - .1f);
-
-                        //Place wall and continue building
-                        newWall1.GetComponent<BoxCollider>().enabled = true;
-                        newWall2.GetComponent<BoxCollider>().enabled = true;
-                        newWall1.wallStart.GetComponent<BoxCollider>().enabled = true;
-                        newWall1.wallEnd.GetComponent<BoxCollider>().enabled = true;
-                        newWall2.wallEnd.GetComponent<BoxCollider>().enabled = true;
-                        wall.GetComponent<BoxCollider>().enabled = true;
-                        wall.wallStart = wallStart;
-                        wall.wallEnd = wallEnd;
-                        wallStart = wallEnd;
-                        wallEnd = Instantiate(wallStudPrefab);
-                        wall = Instantiate(wallPrefab);
-                        wall.transform.position = buildManager.GetMousePoint();
-                        wallEnd.transform.position = buildManager.GetMousePoint();
+                        CreateNewWall(previousWallStart, wallEnd);
+                        CreateNewWall(wallEnd, previousWallEnd);
+                    
                         Destroy(mouseWall.gameObject);
                     }
-                    else if(buildManager.GetMousePointGameObject().tag == "WallStud")
+                    //Ended on Stud
+                    else if(IsWallStud(mouseObject))
                     {
                         Destroy(wallEnd.gameObject);
                         wallEnd = buildManager.GetMousePointGameObject().GetComponent<WallStud>();
 
-                        //Place stud and create another stud with wall
-                        wallStart.GetComponent<BoxCollider>().enabled = true;
-                        wall.GetComponent<BoxCollider>().enabled = true;
-                        wall.wallStart = wallStart;
-                        wall.wallEnd = wallEnd;
-                        wallStart = wallEnd;
-                        wallEnd = Instantiate(wallStudPrefab);
-                        wall = Instantiate(wallPrefab);
-                        wall.transform.position = buildManager.GetMousePoint();
-                        wallEnd.transform.position = buildManager.GetMousePoint();
                     }
+                    //Ended on anything else
                     else
                     {
-                        //Place stud and create another stud with wall
-                        wallStart.GetComponent<BoxCollider>().enabled = true;
-                        wallEnd.GetComponent<BoxCollider>().enabled = true;
-                        wall.GetComponent<BoxCollider>().enabled = true;
-                        wall.wallStart = wallStart;
                         wall.wallEnd = wallEnd;
-                        wallStart = wallEnd;
-                        wallEnd = Instantiate(wallStudPrefab);
-                        wall = Instantiate(wallPrefab);
-                        wall.transform.position = buildManager.GetMousePoint();
-                        wallEnd.transform.position = buildManager.GetMousePoint();
+                        wall.wallStart = wallStart;
                     }
+
+                    ContinueBuild();
                 }
             }
         }
@@ -262,14 +183,78 @@ public class WallBuilder : MonoBehaviour
         }
     }
 
-    public bool IsWallOrStud(GameObject gameObject)
+    public bool IsWall(GameObject gameObject)
     {
-        if(gameObject.tag == "Wall" || gameObject.tag == "WallStud")
+        if (gameObject.tag == "Wall")
         {
             return true;
-        } else
-        {
-            return false;
         }
+        return false;
+    }
+
+    public bool IsWallStud(GameObject gameObject)
+    {
+        if(gameObject.tag == "WallStud")
+        {
+            return true;
+        }
+        return false;
+    }
+
+    public void CreateNewWall(WallStud wallStart, WallStud wallEnd)
+    {
+        Wall newWall = Instantiate(wallPrefab);
+
+        //Set start and end
+        newWall.wallStart = wallStart;
+        newWall.wallEnd = wallEnd;
+        newWall.wallStart.transform.LookAt(newWall.wallEnd.transform);
+        newWall.wallEnd.transform.LookAt(newWall.wallStart.transform);
+
+        //Create Wall and set proper size
+        float distance = Vector3.Distance(newWall.wallStart.transform.position, newWall.wallEnd.transform.position);
+        newWall.transform.position = newWall.wallStart.transform.position + distance / 2 * newWall.wallStart.transform.forward;
+        newWall.transform.LookAt(newWall.wallStart.transform);
+        newWall.transform.localScale = new Vector3(newWall.transform.localScale.x, newWall.transform.localScale.y, distance - .1f);
+
+        newWall.GetComponent<BoxCollider>().enabled = true;
+        newWall.wallStart.GetComponent<BoxCollider>().enabled = true;
+        newWall.wallEnd.GetComponent<BoxCollider>().enabled = true;
+    }
+
+    public void ContinueBuild()
+    {
+        //Place wall and continue building
+        wallStart.GetComponent<BoxCollider>().enabled = true;
+        wallEnd.GetComponent<BoxCollider>().enabled = true;
+        wall.GetComponent<BoxCollider>().enabled = true;
+        wall.wallStart = wallStart;
+        wall.wallEnd = wallEnd;
+        wallStart = wallEnd;
+        wall = Instantiate(wallPrefab);
+        wall.transform.position = buildManager.GetMousePoint();
+        wallEnd = Instantiate(wallStudPrefab);
+        wallEnd.transform.position = buildManager.GetMousePoint();
+    }
+
+    public void UpdateWall()
+    {
+        wallStart.transform.LookAt(wallEnd.transform);
+
+        float distance = Vector3.Distance(wallStart.transform.position, wallEnd.transform.position);
+        wall.transform.position = wallStart.transform.position + distance / 2 * wallStart.transform.forward;
+        wall.transform.LookAt(wallStart.transform);
+        wall.transform.localScale = new Vector3(wall.transform.localScale.x, wall.transform.localScale.y, distance - .1f);
+    }
+
+    public void SetStart(WallStud wallStartValue)
+    { 
+        wallStart = wallStartValue;
+        wallStart.GetComponent<BoxCollider>().enabled = true;
+        wallEnd = Instantiate(wallStudPrefab);
+        wall = Instantiate(wallPrefab);
+        wall.wallStart = wallStart;
+        wall.transform.position = buildManager.GetMousePoint();
+        wallEnd.transform.position = buildManager.GetMousePoint();
     }
 }

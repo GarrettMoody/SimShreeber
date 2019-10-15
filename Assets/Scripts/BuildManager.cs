@@ -36,12 +36,14 @@ public class BuildManager : MonoBehaviour
 
     public void OnBuildWallButtonClickListener()
     {
+        isDeleting = false;
         wallBuilder.StartBuilding();
     }
 
    
     public void OnDeleteButtonClicked()
     {
+        wallBuilder.CancelBuild();
         isDeleting = true;
     }
 
@@ -53,6 +55,19 @@ public class BuildManager : MonoBehaviour
         float zPoint = Mathf.RoundToInt(point.z / gridSize);
 
         return new Vector3(xPoint * gridSize, yPoint * gridSize, zPoint * gridSize);
+    }
+
+    public Vector3 GetClosestGridPoint(Vector3 point, Vector3 offset)
+    {
+        point -= offset;
+
+        float xPoint = Mathf.RoundToInt(point.x / gridSize);
+        float yPoint = Mathf.RoundToInt(point.y / gridSize);
+        float zPoint = Mathf.RoundToInt(point.z / gridSize);
+
+        Vector3 result = new Vector3(xPoint * gridSize, yPoint * gridSize, zPoint * gridSize);
+        result += offset;
+        return result;
     }
 
     /// <summary>

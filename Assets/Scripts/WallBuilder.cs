@@ -13,7 +13,6 @@ public class WallBuilder : MonoBehaviour
     private WallStud wallEnd;
     private Wall wall;
     private bool startSet;
-    private bool startedOnWall;
 
     // Update is called once per frame
     void Update()
@@ -21,15 +20,16 @@ public class WallBuilder : MonoBehaviour
         if (isBuilding)
         {
             Vector3 mousePoint;
-            if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
-            {
-                mousePoint = buildManager.GetMousePoint();
-            }
-            else
+
+            if (buildManager.GetSnapToGridToggle())
             {
                 mousePoint = buildManager.GetClosestGridPoint(buildManager.GetMousePoint());
             }
-            
+            else
+            {
+                mousePoint = buildManager.GetMousePoint();
+            }
+
             //Escape Key Pressed
             if (Input.GetKeyDown(KeyCode.Escape) || Input.GetMouseButtonDown(1))
             {
@@ -67,15 +67,25 @@ public class WallBuilder : MonoBehaviour
                 //If pointing to another wall
                 if (IsWall(mouseObject))
                 {
+                    Wall mouseWall = mouseObject.GetComponent<Wall>();
                     //Get Angle
-                    Vector2 connectingWallVector = new Vector2(mouseObject.GetComponent<Wall>().wallStart.transform.position.x, mouseObject.GetComponent<Wall>().wallStart.transform.position.z) - new Vector2(mouseObject.GetComponent<Wall>().wallEnd.transform.position.x, mouseObject.GetComponent<Wall>().wallEnd.transform.position.z);
+                    Vector2 connectingWallVector = new Vector2(mouseWall.wallStart.transform.position.x, mouseWall.wallStart.transform.position.z) - new Vector2(mouseWall.wallEnd.transform.position.x, mouseWall.wallEnd.transform.position.z);
                     Vector2 newWallVector = new Vector2(wallStart.transform.position.x, wallStart.transform.position.z) - new Vector2(buildManager.GetMousePoint().x, buildManager.GetMousePoint().z);
                     Debug.Log(connectingWallVector + " " + newWallVector + " " + Vector2.Angle(connectingWallVector, newWallVector));
 
+                    if (Mathf.Abs(90f - Vector2.Angle(connectingWallVector, newWallVector)) < 5f)
+                    {
+                        mousePoint = mouseWall.GetComponent<BoxCollider>().ClosestPoint(wallStart.transform.position);
+                        //mousePoint = new Vector3(mousePoint.x, buildManager.GetMousePointGameObject().transform.position.y, mousePoint.z);
+                    }
+                    else
+                    {
+                        mousePoint = new Vector3(buildManager.GetMousePoint().x, buildManager.GetMousePointGameObject().transform.position.y, buildManager.GetMousePoint().z);
+                    }
 
-
+                    //mousePoint = new Vector3(buildManager.GetMousePoint().x, buildManager.GetMousePointGameObject().transform.position.y, buildManager.GetMousePoint().z);
                     wallEnd.gameObject.SetActive(true);
-                    wallEnd.transform.position = new Vector3(buildManager.GetMousePoint().x, buildManager.GetMousePointGameObject().transform.position.y, buildManager.GetMousePoint().z);
+                    wallEnd.transform.position = mousePoint;
                 }
                 else if (IsWallStud(mouseObject))
                 {
@@ -117,7 +127,6 @@ public class WallBuilder : MonoBehaviour
                         Wall mouseWall = buildManager.GetMousePointGameObject().GetComponent<Wall>();
                         WallStud previousWallStart = mouseWall.wallStart;
                         WallStud previousWallEnd = mouseWall.wallEnd;
-                        startedOnWall = true;
 
                         //Create new walls
                         CreateNewWall(previousWallStart, wallStart);
@@ -266,7 +275,6 @@ public class WallBuilder : MonoBehaviour
         wall.transform.position = buildManager.GetMousePoint();
         wallEnd = Instantiate(wallStudPrefab);
         wallEnd.transform.position = buildManager.GetMousePoint();
-        startedOnWall = false;
     }
 
     public void UpdateWall()

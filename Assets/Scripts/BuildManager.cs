@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class BuildManager : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class BuildManager : MonoBehaviour
     public ToolbarMenus toolbarMenus;
     public WallBuilder wallBuilder;
     public float gridSize = .1f;
+    public TextMeshProUGUI snapText;
     
     #endregion
 
@@ -16,22 +18,51 @@ public class BuildManager : MonoBehaviour
 
     private bool isBuilding;
     private bool isDeleting;
+    private bool snapToGridToggle;
 
     #endregion
+
+    private void Start()
+    {
+        UpdateSnapToGridText();
+    }
 
     // Update is called once per frame
     void Update()
     {
-        if(isDeleting)
+        if (isDeleting)
         {
-            if(Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButtonDown(0))
             {
-                if(GetMousePointGameObject().name != "Floor")
+                if (GetMousePointGameObject().name != "Floor")
                 {
                     Destroy(GetMousePointGameObject());
                 }
             }
         }
+
+        if (Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift))
+        {
+            snapToGridToggle = !snapToGridToggle;
+            UpdateSnapToGridText();
+        }
+    }
+
+    public void UpdateSnapToGridText()
+    {
+        if (snapToGridToggle)
+        {
+            snapText.text = "SNAP";
+        }
+        else
+        {
+            snapText.text = "FREE";
+        }
+    }
+
+    public bool GetSnapToGridToggle()
+    {
+        return snapToGridToggle;
     }
 
     public void OnBuildWallButtonClickListener()

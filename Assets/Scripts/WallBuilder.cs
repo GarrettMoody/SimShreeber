@@ -30,33 +30,33 @@ public class WallBuilder : MonoBehaviour
                 mousePoint = buildManager.GetMousePoint();
             }
 
-            //Escape Key Pressed
-            if (Input.GetKeyDown(KeyCode.Escape) || Input.GetMouseButtonDown(1))
-            {
-                CancelBuild();
-            }
+            mousePoint = new Vector3(mousePoint.x, mousePoint.y + .5f, mousePoint.z);
+           
 
             //Build hasn't started yet
             if (!startSet)
             {
                 GameObject mouseObject = buildManager.GetMousePointGameObject();
 
-                //If pointing to a wall
-                if (IsWall(mouseObject))
+                if(mouseObject != null)
                 {
-                    wallStart.gameObject.SetActive(true);
-                    wallStart.transform.position = new Vector3(buildManager.GetMousePoint().x, buildManager.GetMousePointGameObject().transform.position.y, buildManager.GetMousePoint().z);
-                }
-                //If pointing to a wall stud
-                else if (IsWallStud(mouseObject))
-                {
-                    wallStart.gameObject.SetActive(false);
-                }
-                //Pointing to anything else
-                else
-                {
-                    wallStart.gameObject.SetActive(true);
-                    wallStart.transform.position = mousePoint;
+                    //If pointing to a wall
+                    if (IsWall(mouseObject))
+                    {
+                        wallStart.gameObject.SetActive(true);
+                        wallStart.transform.position = new Vector3(buildManager.GetMousePoint().x, buildManager.GetMousePointGameObject().transform.position.y, buildManager.GetMousePoint().z);
+                    }
+                    //If pointing to a wall stud
+                    else if (IsWallStud(mouseObject))
+                    {
+                        wallStart.gameObject.SetActive(false);
+                    }
+                    //Pointing to anything else
+                    else
+                    {
+                        wallStart.gameObject.SetActive(true);
+                        wallStart.transform.position = mousePoint;
+                    }
                 }
             }
             //Build has started
@@ -94,19 +94,6 @@ public class WallBuilder : MonoBehaviour
                 }
                 else
                 {
-                    //mousePoint = buildManager.GetClosestGridPoint(buildManager.GetMousePoint(), wallStart.transform.position);
-                    //if (startedOnWall)
-                    //{
-                    //Vector2 connectingWallVector = new Vector2(connectingWall.wallStart.transform.position.x, connectingWall.wallStart.transform.position.z) - new Vector2(connectingWall.wallEnd.transform.position.x, connectingWall.wallEnd.transform.position.z);
-                    //Vector2 newWallVector = new Vector2(wallStart.transform.position.x, wallStart.transform.position.z) - new Vector2(buildManager.GetMousePoint().x, buildManager.GetMousePoint().z);
-                    //Debug.Log(connectingWallVector + " " + newWallVector + " " + Vector2.Angle(connectingWallVector, newWallVector));
-                    //    //if(Mathf.Abs(90 - Mathf.Abs(Vector2.Angle(connectingWallVector, newWallVector))) < 5.0f)
-                    //    //{
-                    //        //float directionModifier = -newWallVector.y / Mathf.Abs(newWallVector.y);
-                    //        //mousePoint = wallStart.transform.position + Vector3.Magnitude(wallStart.transform.position - wallEnd.transform.position) * Vector3.forward * directionModifier;
-
-                    //    //}
-                    //}
                     wallEnd.gameObject.SetActive(true);
                     wallEnd.transform.position = mousePoint;
                     wallEnd.transform.LookAt(wallStart.transform);
@@ -243,6 +230,8 @@ public class WallBuilder : MonoBehaviour
     {
         Wall newWall = Instantiate(wallPrefab);
 
+        wallStart.AddWall(newWall);
+        wallEnd.AddWall(newWall);
         //Set start and end
         newWall.wallStart = wallStart;
         newWall.wallEnd = wallEnd;
@@ -265,11 +254,17 @@ public class WallBuilder : MonoBehaviour
     public void ContinueBuild()
     {
         //Place wall and continue building
+        //Enable Colliders
         wallStart.GetComponent<BoxCollider>().enabled = true;
         wallEnd.GetComponent<BoxCollider>().enabled = true;
         wall.GetComponent<BoxCollider>().enabled = true;
+
+        //Assign Studs to walls and walls to studs
+        wallStart.AddWall(wall);
+        wallEnd.AddWall(wall);
         wall.wallStart = wallStart;
         wall.wallEnd = wallEnd;
+
         wallStart = wallEnd;
         wall = Instantiate(wallPrefab);
         wall.transform.position = buildManager.GetMousePoint();

@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7197ec18f6b404667b9e6c3f2c8bff43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  normalMaterial: {fileID: 2100000, guid: b8a5a15a1cbb84856a068e7d4a410078, type: 2}
+  buildingMaterial: {fileID: 2100000, guid: d28f8ba3901af404db8d82d4890f85e7, type: 2}
 --- !u!1001 &9178637064280201923
 PrefabInstance:
   m_ObjectHideFlags: 0

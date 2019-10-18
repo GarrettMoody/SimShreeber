@@ -444,7 +444,7 @@ GameObject:
   - component: {fileID: 373989405}
   - component: {fileID: 373989404}
   m_Layer: 5
-  m_Name: Piller
+  m_Name: DoorButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1348,6 +1348,49 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1194987314}
   m_CullTransparentMesh: 0
+--- !u!1 &1230822361
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1230822362}
+  - component: {fileID: 1230822363}
+  m_Layer: 0
+  m_Name: DoorBuilder
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1230822362
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1230822361}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1733306367}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1230822363
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1230822361}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 208509b1182cf44bc9b18f84a19d8505, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1314874541
 GameObject:
   m_ObjectHideFlags: 0
@@ -1545,7 +1588,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Piller
+  m_Text: Door
 --- !u!222 &1585951371
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1571,11 +1614,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 459968, guid: 407bd5cbe8c43334bb1b25c0f3826974, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 6.71
+      value: 8.3
       objectReference: {fileID: 0}
     - target: {fileID: 459968, guid: 407bd5cbe8c43334bb1b25c0f3826974, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -6.45
+      value: -5.53
       objectReference: {fileID: 0}
     - target: {fileID: 459968, guid: 407bd5cbe8c43334bb1b25c0f3826974, type: 3}
       propertyPath: m_LocalRotation.x
@@ -1611,7 +1654,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 11455738, guid: 407bd5cbe8c43334bb1b25c0f3826974, type: 3}
       propertyPath: lastTab
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 11455738, guid: 407bd5cbe8c43334bb1b25c0f3826974, type: 3}
       propertyPath: minHeight
@@ -1863,6 +1906,10 @@ MonoBehaviour:
   wallBuilder: {fileID: 1497079567}
   gridSize: 0.25
   snapText: {fileID: 1140758853}
+  floor: {fileID: 1594474232}
+  floorNormalMaterial: {fileID: 2100000, guid: 7aee1f85c98bc43fb889f3ab21b0c813, type: 2}
+  floorBuildingMaterial: {fileID: 2100000, guid: c4161ac74fa0e463f8bedba5920c3064,
+    type: 2}
 --- !u!4 &1733306367
 Transform:
   m_ObjectHideFlags: 0
@@ -1875,6 +1922,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1497079566}
+  - {fileID: 1230822362}
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

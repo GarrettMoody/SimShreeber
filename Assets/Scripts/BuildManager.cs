@@ -11,7 +11,10 @@ public class BuildManager : MonoBehaviour
     public WallBuilder wallBuilder;
     public float gridSize = .1f;
     public TextMeshProUGUI snapText;
-    
+
+    public GameObject floor;
+    public Material floorNormalMaterial;
+    public Material floorBuildingMaterial;
     #endregion
 
     #region Private Variables
@@ -25,11 +28,18 @@ public class BuildManager : MonoBehaviour
     private void Start()
     {
         UpdateSnapToGridText();
+        StopBuilding();
     }
 
     // Update is called once per frame
     void Update()
     {
+        //Escape Key Pressed
+        if (Input.GetKeyDown(KeyCode.Escape) || Input.GetMouseButtonDown(1))
+        {
+            StopBuilding();
+        }
+
         if (isDeleting)
         {
             if (Input.GetMouseButtonDown(0))
@@ -41,22 +51,58 @@ public class BuildManager : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift))
+        if (isBuilding)
         {
-            snapToGridToggle = !snapToGridToggle;
-            UpdateSnapToGridText();
+            if (Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift))
+            {
+                snapToGridToggle = !snapToGridToggle;
+                UpdateSnapToGridText();
+            }
         }
+    }
+
+    public void StartBuilding()
+    {
+        GameObject [] wallStuds = GameObject.FindGameObjectsWithTag("WallStud");
+        foreach (GameObject wallStud in wallStuds)
+        {
+            wallStud.GetComponent<WallStud>().UseBuildingMaterial();
+        }
+
+        floor.GetComponent<Renderer>().material = floorBuildingMaterial;
+
+        isBuilding = true;
+        UpdateSnapToGridText();
+        snapText.enabled = true;
+    }
+
+    public void StopBuilding()
+    {
+        GameObject[] wallStuds = GameObject.FindGameObjectsWithTag("WallStud");
+        foreach (GameObject wallStud in wallStuds)
+        {
+            wallStud.GetComponent<WallStud>().UseNormalMaterial();
+        }
+
+        floor.GetComponent<Renderer>().material = floorNormalMaterial;
+
+        wallBuilder.CancelBuild();
+        isBuilding = false;
+        snapText.enabled = false;
     }
 
     public void UpdateSnapToGridText()
     {
-        if (snapToGridToggle)
+        if(isBuilding)
         {
-            snapText.text = "SNAP";
-        }
-        else
-        {
-            snapText.text = "FREE";
+            if (snapToGridToggle)
+            {
+                snapText.text = "SNAP";
+            }
+            else
+            {
+                snapText.text = "FREE";
+            }
         }
     }
 
@@ -68,12 +114,21 @@ public class BuildManager : MonoBehaviour
     public void OnBuildWallButtonClickListener()
     {
         isDeleting = false;
+        StartBuilding();
         wallBuilder.StartBuilding();
     }
 
-   
+    public void OnBuildDoorButtonClickListener()
+    {
+        isDeleting = false;
+        StartBuilding();
+        wallBuilder.StartBuilding();
+    }
+
+
     public void OnDeleteButtonClicked()
     {
+        StartBuilding();
         wallBuilder.CancelBuild();
         isDeleting = true;
     }
@@ -112,18 +167,6 @@ public class BuildManager : MonoBehaviour
         if (Physics.Raycast(ray, out hit, Mathf.Infinity))
         { 
             return hit.point;
-        }
-
-        return Vector3.zero;
-    }
-
-    public Vector3 GetMousePointNormal()
-    {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
-        if (Physics.Raycast(ray, out hit, Mathf.Infinity))
-        {
-            return hit.normal;
         }
 
         return Vector3.zero;

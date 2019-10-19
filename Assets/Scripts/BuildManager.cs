@@ -9,12 +9,17 @@ public class BuildManager : MonoBehaviour
 
     public ToolbarMenus toolbarMenus;
     public WallBuilder wallBuilder;
+    public DoorBuilder doorBuilder;
     public float gridSize = .1f;
     public TextMeshProUGUI snapText;
 
     public GameObject floor;
     public Material floorNormalMaterial;
     public Material floorBuildingMaterial;
+    public Material wallInvisible;
+    public Material wallNormal;
+
+    public Wall wallPrefab;
     #endregion
 
     #region Private Variables
@@ -122,7 +127,7 @@ public class BuildManager : MonoBehaviour
     {
         isDeleting = false;
         StartBuilding();
-        wallBuilder.StartBuilding();
+        doorBuilder.StartBuilding();
     }
 
 
@@ -187,5 +192,23 @@ public class BuildManager : MonoBehaviour
         }
 
         return null;
+    }
+
+    public bool IsWall(GameObject gameObject)
+    {
+        if (gameObject.tag == "Wall")
+        {
+            return true;
+        }
+        return false;
+    }
+
+    public bool IsWallStud(GameObject gameObject)
+    {
+        if (gameObject.tag == "WallStud")
+        {
+            return true;
+        }
+        return false;
     }
 }

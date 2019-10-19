@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class WallBuilder : MonoBehaviour
 {
-    public Wall wallPrefab;
     public WallStud wallStudPrefab;
     public BuildManager buildManager;
 
@@ -41,13 +40,13 @@ public class WallBuilder : MonoBehaviour
                 if(mouseObject != null)
                 {
                     //If pointing to a wall
-                    if (IsWall(mouseObject))
+                    if (buildManager.IsWall(mouseObject))
                     {
                         wallStart.gameObject.SetActive(true);
                         wallStart.transform.position = new Vector3(buildManager.GetMousePoint().x, buildManager.GetMousePointGameObject().transform.position.y, buildManager.GetMousePoint().z);
                     }
                     //If pointing to a wall stud
-                    else if (IsWallStud(mouseObject))
+                    else if (buildManager.IsWallStud(mouseObject))
                     {
                         wallStart.gameObject.SetActive(false);
                     }
@@ -65,7 +64,7 @@ public class WallBuilder : MonoBehaviour
                 GameObject mouseObject = buildManager.GetMousePointGameObject();
 
                 //If pointing to another wall
-                if (IsWall(mouseObject))
+                if (buildManager.IsWall(mouseObject))
                 {
                     Wall mouseWall = mouseObject.GetComponent<Wall>();
                     //Get Angle
@@ -87,7 +86,7 @@ public class WallBuilder : MonoBehaviour
                     wallEnd.gameObject.SetActive(true);
                     wallEnd.transform.position = mousePoint;
                 }
-                else if (IsWallStud(mouseObject))
+                else if (buildManager.IsWallStud(mouseObject))
                 {
                     wallEnd.gameObject.SetActive(false);
                     wallEnd.transform.position = mouseObject.transform.position;
@@ -108,7 +107,7 @@ public class WallBuilder : MonoBehaviour
                     GameObject mouseObject = buildManager.GetMousePointGameObject();
 
                     //Started on Wall
-                    if(IsWall(mouseObject))
+                    if(buildManager.IsWall(mouseObject))
                     {
                         //Pointing to wall. Split wall and place new stud
                         Wall mouseWall = buildManager.GetMousePointGameObject().GetComponent<Wall>();
@@ -124,7 +123,7 @@ public class WallBuilder : MonoBehaviour
                         Destroy(mouseWall.gameObject);
                     }
                     //Started on Stud
-                    else if (IsWallStud(mouseObject))
+                    else if (buildManager.IsWallStud(mouseObject))
                     {
                         Destroy(wallStart.gameObject);
                         SetStart(mouseObject.GetComponent<WallStud>());
@@ -143,7 +142,7 @@ public class WallBuilder : MonoBehaviour
                     GameObject mouseObject = buildManager.GetMousePointGameObject();
 
                     //Ended on Wall
-                    if(IsWall(mouseObject))
+                    if(buildManager.IsWall(mouseObject))
                     {
                         //Pointing to wall. Split wall and place new stud
                         Wall mouseWall = buildManager.GetMousePointGameObject().GetComponent<Wall>();
@@ -157,7 +156,7 @@ public class WallBuilder : MonoBehaviour
                         Destroy(mouseWall.gameObject);
                     }
                     //Ended on Stud
-                    else if(IsWallStud(mouseObject))
+                    else if(buildManager.IsWallStud(mouseObject))
                     {
                         Destroy(wallEnd.gameObject);
                         wallEnd = buildManager.GetMousePointGameObject().GetComponent<WallStud>();
@@ -208,27 +207,9 @@ public class WallBuilder : MonoBehaviour
         }
     }
 
-    public bool IsWall(GameObject gameObject)
-    {
-        if (gameObject.tag == "Wall")
-        {
-            return true;
-        }
-        return false;
-    }
-
-    public bool IsWallStud(GameObject gameObject)
-    {
-        if(gameObject.tag == "WallStud")
-        {
-            return true;
-        }
-        return false;
-    }
-
     public Wall CreateNewWall(WallStud wallStart, WallStud wallEnd)
     {
-        Wall newWall = Instantiate(wallPrefab);
+        Wall newWall = Instantiate(buildManager.wallPrefab);
 
         wallStart.AddWall(newWall);
         wallEnd.AddWall(newWall);
@@ -266,7 +247,7 @@ public class WallBuilder : MonoBehaviour
         wall.wallEnd = wallEnd;
 
         wallStart = wallEnd;
-        wall = Instantiate(wallPrefab);
+        wall = Instantiate(buildManager.wallPrefab);
         wall.transform.position = buildManager.GetMousePoint();
         wallEnd = Instantiate(wallStudPrefab);
         wallEnd.transform.position = buildManager.GetMousePoint();
@@ -287,7 +268,7 @@ public class WallBuilder : MonoBehaviour
         wallStart = wallStartValue;
         wallStart.GetComponent<BoxCollider>().enabled = true;
         wallEnd = Instantiate(wallStudPrefab);
-        wall = Instantiate(wallPrefab);
+        wall = Instantiate(buildManager.wallPrefab);
         wall.wallStart = wallStart;
         wall.transform.position = buildManager.GetMousePoint();
         wallEnd.transform.position = buildManager.GetMousePoint();

@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class WallBuilder : MonoBehaviour
 {
-    public WallStud wallStudPrefab;
     public BuildManager buildManager;
+    public WallStud wallStudPrefab;
 
     private bool isBuilding;
     private WallStud wallStart;
@@ -177,6 +177,7 @@ public class WallBuilder : MonoBehaviour
 
     public void StartBuilding()
     {
+        buildManager.StartBuilding();
         isBuilding = true;
         startSet = false;
         wallStart = Instantiate(wallStudPrefab);
@@ -185,7 +186,7 @@ public class WallBuilder : MonoBehaviour
     /// <summary>
     /// Cancels the current build.
     /// </summary>
-    public void CancelBuild()
+    public void StopBuilding()
     {
         isBuilding = false;
         if(wallStart != null)
@@ -272,5 +273,10 @@ public class WallBuilder : MonoBehaviour
         wall.wallStart = wallStart;
         wall.transform.position = buildManager.GetMousePoint();
         wallEnd.transform.position = buildManager.GetMousePoint();
+    }
+
+    public bool IsBuilding()
+    {
+        return isBuilding;
     }
 }

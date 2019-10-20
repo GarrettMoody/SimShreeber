@@ -106,3 +106,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   wallStart: {fileID: 0}
   wallEnd: {fileID: 0}
+  wallNormal: {fileID: 2100000, guid: 2b228a8e084fa4cf9a1e8a87e9e1b596, type: 2}
+  wallInvisible: {fileID: 2100000, guid: 221eb275b9cde46099e056d33f41eb1b, type: 2}

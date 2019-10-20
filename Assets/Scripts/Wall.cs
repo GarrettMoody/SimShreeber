@@ -6,6 +6,8 @@ public class Wall : MonoBehaviour
 {
     public WallStud wallStart;
     public WallStud wallEnd;
+    public Material wallNormal;
+    public Material wallInvisible;
 
     public void OnDestroy()
     {
@@ -18,5 +20,15 @@ public class Wall : MonoBehaviour
         {
             wallEnd.RemoveWall(this);
         }
+    }
+
+    public void UseNormalMaterial()
+    {
+        this.GetComponent<Renderer>().material = wallNormal;
+    }
+
+    public void UseInvisibleMaterial()
+    {
+        this.GetComponent<Renderer>().material = wallInvisible;
     }
 }

@@ -7,22 +7,21 @@ public class BuildManager : MonoBehaviour
 {
     #region Public Variables
 
-    public ToolbarMenus toolbarMenus;
+    public Wall wallPrefab;
+
+    #endregion
+
+    #region Private Variables
+
+    protected ToolbarMenus toolbarMenus;
     public WallBuilder wallBuilder;
     public DoorBuilder doorBuilder;
     public float gridSize = .1f;
     public TextMeshProUGUI snapText;
-
+     
     public GameObject floor;
     public Material floorNormalMaterial;
     public Material floorBuildingMaterial;
-    public Material wallInvisible;
-    public Material wallNormal;
-
-    public Wall wallPrefab;
-    #endregion
-
-    #region Private Variables
 
     private bool isBuilding;
     private bool isDeleting;
@@ -83,6 +82,7 @@ public class BuildManager : MonoBehaviour
 
     public void StopBuilding()
     {
+        //Change colors of studs
         GameObject[] wallStuds = GameObject.FindGameObjectsWithTag("WallStud");
         foreach (GameObject wallStud in wallStuds)
         {
@@ -91,7 +91,15 @@ public class BuildManager : MonoBehaviour
 
         floor.GetComponent<Renderer>().material = floorNormalMaterial;
 
-        wallBuilder.CancelBuild();
+        if(wallBuilder.IsBuilding())
+        {
+            wallBuilder.StopBuilding();
+        }
+        if (doorBuilder.IsBuilding())
+        {
+            doorBuilder.StopBuilding();
+        }
+
         isBuilding = false;
         snapText.enabled = false;
     }
@@ -119,14 +127,12 @@ public class BuildManager : MonoBehaviour
     public void OnBuildWallButtonClickListener()
     {
         isDeleting = false;
-        StartBuilding();
         wallBuilder.StartBuilding();
     }
 
     public void OnBuildDoorButtonClickListener()
     {
         isDeleting = false;
-        StartBuilding();
         doorBuilder.StartBuilding();
     }
 
@@ -134,7 +140,13 @@ public class BuildManager : MonoBehaviour
     public void OnDeleteButtonClicked()
     {
         StartBuilding();
-        wallBuilder.CancelBuild();
+        if(wallBuilder.IsBuilding())
+        {
+            wallBuilder.StopBuilding();
+        } else if(doorBuilder.IsBuilding())
+        {
+            doorBuilder.StopBuilding();
+        }
         isDeleting = true;
     }
 

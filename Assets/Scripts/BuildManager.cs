@@ -16,7 +16,7 @@ public class BuildManager : MonoBehaviour
     protected ToolbarMenus toolbarMenus;
     public WallBuilder wallBuilder;
     public DoorBuilder doorBuilder;
-    public float gridSize = .1f;
+    public float gridSize;
     public TextMeshProUGUI snapText;
      
     public GameObject floor;
@@ -67,11 +67,11 @@ public class BuildManager : MonoBehaviour
 
     public void StartBuilding()
     {
-        GameObject [] wallStuds = GameObject.FindGameObjectsWithTag("WallStud");
-        foreach (GameObject wallStud in wallStuds)
-        {
-            wallStud.GetComponent<WallStud>().UseBuildingMaterial();
-        }
+        //GameObject [] wallStuds = GameObject.FindGameObjectsWithTag("WallStud");
+        //foreach (GameObject wallStud in wallStuds)
+        //{
+        //    wallStud.GetComponent<WallStud>().UseBuildingMaterial();
+        //}
 
         floor.GetComponent<Renderer>().material = floorBuildingMaterial;
 
@@ -83,11 +83,11 @@ public class BuildManager : MonoBehaviour
     public void StopBuilding()
     {
         //Change colors of studs
-        GameObject[] wallStuds = GameObject.FindGameObjectsWithTag("WallStud");
-        foreach (GameObject wallStud in wallStuds)
-        {
-            wallStud.GetComponent<WallStud>().UseNormalMaterial();
-        }
+        //GameObject[] wallStuds = GameObject.FindGameObjectsWithTag("WallStud");
+        //foreach (GameObject wallStud in wallStuds)
+        //{
+        //    wallStud.GetComponent<WallStud>().UseNormalMaterial();
+        //}
 
         floor.GetComponent<Renderer>().material = floorNormalMaterial;
 
@@ -101,6 +101,7 @@ public class BuildManager : MonoBehaviour
         }
 
         isBuilding = false;
+        isDeleting = false;
         snapText.enabled = false;
     }
 

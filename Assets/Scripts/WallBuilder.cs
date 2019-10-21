@@ -12,6 +12,12 @@ public class WallBuilder : MonoBehaviour
     private WallStud wallEnd;
     private Wall wall;
     private bool startSet;
+    private float wallStudHeight;
+
+    public void Start()
+    {
+        wallStudHeight = wallStudPrefab.GetComponent<BoxCollider>().size.y;
+    }
 
     // Update is called once per frame
     void Update()
@@ -29,8 +35,8 @@ public class WallBuilder : MonoBehaviour
                 mousePoint = buildManager.GetMousePoint();
             }
 
-            mousePoint = new Vector3(mousePoint.x, mousePoint.y + .5f, mousePoint.z);
-           
+            
+            mousePoint = new Vector3(mousePoint.x, mousePoint.y + wallStudHeight/2, mousePoint.z);
 
             //Build hasn't started yet
             if (!startSet)
@@ -224,7 +230,7 @@ public class WallBuilder : MonoBehaviour
         float distance = Vector3.Distance(newWall.wallStart.transform.position, newWall.wallEnd.transform.position);
         newWall.transform.position = newWall.wallStart.transform.position + distance / 2 * newWall.wallStart.transform.forward;
         newWall.transform.LookAt(newWall.wallStart.transform);
-        newWall.transform.localScale = new Vector3(newWall.transform.localScale.x, newWall.transform.localScale.y, distance - .1f);
+        newWall.transform.localScale = new Vector3(newWall.transform.localScale.x, newWall.transform.localScale.y, distance/3);
 
         newWall.GetComponent<BoxCollider>().enabled = true;
         newWall.wallStart.GetComponent<BoxCollider>().enabled = true;
@@ -261,7 +267,17 @@ public class WallBuilder : MonoBehaviour
         float distance = Vector3.Distance(wallStart.transform.position, wallEnd.transform.position);
         wall.transform.position = wallStart.transform.position + distance / 2 * wallStart.transform.forward;
         wall.transform.LookAt(wallStart.transform);
-        wall.transform.localScale = new Vector3(wall.transform.localScale.x, wall.transform.localScale.y, distance - .1f);
+        wall.transform.localScale = new Vector3(wall.transform.localScale.x, wall.transform.localScale.y, distance / 3);
+    }
+
+    public void UpdateWall(Wall updateWall)
+    {
+        updateWall.wallStart.transform.LookAt(updateWall.wallEnd.transform);
+
+        float distance = Vector3.Distance(updateWall.wallStart.transform.position, updateWall.wallEnd.transform.position);
+        updateWall.transform.position = updateWall.wallStart.transform.position + distance / 2 * updateWall.wallStart.transform.forward;
+        updateWall.transform.LookAt(updateWall.wallStart.transform);
+        updateWall.transform.localScale = new Vector3(updateWall.transform.localScale.x, updateWall.transform.localScale.y, distance / 3);
     }
 
     public void SetStart(WallStud wallStartValue)

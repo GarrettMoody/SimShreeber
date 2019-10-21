@@ -1391,7 +1391,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buildManager: {fileID: 1733306366}
-  doorPrefab: {fileID: 2280572961804170229, guid: 4ff2e6c43f58349518198606ee0d9974,
+  doorPrefab: {fileID: 3793416695476264572, guid: 90246902e1d424583a8b38fa941e3352,
     type: 3}
   wallBuilder: {fileID: 1497079567}
 --- !u!1 &1314874541
@@ -1517,7 +1517,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buildManager: {fileID: 1733306366}
-  wallStudPrefab: {fileID: 2897034381355676138, guid: 9776056bc9a3e48b3aecaf34198eae64,
+  wallStudPrefab: {fileID: 7798646963449849866, guid: c01e598ead2fb4d5fb343158b6d076fe,
     type: 3}
 --- !u!1 &1585951368
 GameObject:
@@ -1655,15 +1655,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 11455738, guid: 407bd5cbe8c43334bb1b25c0f3826974, type: 3}
       propertyPath: lastTab
-      value: 0
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 11455738, guid: 407bd5cbe8c43334bb1b25c0f3826974, type: 3}
       propertyPath: minHeight
-      value: 1
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 11455738, guid: 407bd5cbe8c43334bb1b25c0f3826974, type: 3}
       propertyPath: maxHeight
-      value: 8
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 11455738, guid: 407bd5cbe8c43334bb1b25c0f3826974, type: 3}
       propertyPath: scrollWheelZoomingSensitivity
@@ -1676,6 +1676,10 @@ PrefabInstance:
     - target: {fileID: 11455738, guid: 407bd5cbe8c43334bb1b25c0f3826974, type: 3}
       propertyPath: mouseRotationSpeed
       value: 300
+      objectReference: {fileID: 0}
+    - target: {fileID: 11455738, guid: 407bd5cbe8c43334bb1b25c0f3826974, type: 3}
+      propertyPath: limitMap
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 407bd5cbe8c43334bb1b25c0f3826974, type: 3}
@@ -1903,11 +1907,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8aae304364bc44c4b85dacfdda0b5888, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  wallPrefab: {fileID: -3989053247443736453, guid: 05d6c78cb8e2c44aebe73037196cc481,
+  wallPrefab: {fileID: -8867596846251520611, guid: 25c88f50e7e78486aac25d628c7cb875,
     type: 3}
   wallBuilder: {fileID: 1497079567}
   doorBuilder: {fileID: 1230822363}
-  gridSize: 0.1
+  gridSize: 1
   snapText: {fileID: 1140758853}
   floor: {fileID: 1594474232}
   floorNormalMaterial: {fileID: 2100000, guid: 7aee1f85c98bc43fb889f3ab21b0c813, type: 2}

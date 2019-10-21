@@ -6,8 +6,8 @@ public class Wall : MonoBehaviour
 {
     public WallStud wallStart;
     public WallStud wallEnd;
-    public Material wallNormal;
-    public Material wallInvisible;
+    public Material[] normalMaterials;
+    public Material[] wallInvisible;
 
     public void OnDestroy()
     {
@@ -24,11 +24,11 @@ public class Wall : MonoBehaviour
 
     public void UseNormalMaterial()
     {
-        this.GetComponent<Renderer>().material = wallNormal;
+        this.GetComponent<Renderer>().materials = normalMaterials;
     }
 
     public void UseInvisibleMaterial()
     {
-        this.GetComponent<Renderer>().material = wallInvisible;
+        this.GetComponent<Renderer>().materials = wallInvisible;
     }
 }

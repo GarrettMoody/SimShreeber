@@ -76,7 +76,6 @@ public class WallBuilder : MonoBehaviour
                     //Get Angle
                     Vector2 connectingWallVector = new Vector2(mouseWall.wallStart.transform.position.x, mouseWall.wallStart.transform.position.z) - new Vector2(mouseWall.wallEnd.transform.position.x, mouseWall.wallEnd.transform.position.z);
                     Vector2 newWallVector = new Vector2(wallStart.transform.position.x, wallStart.transform.position.z) - new Vector2(buildManager.GetMousePoint().x, buildManager.GetMousePoint().z);
-                    Debug.Log(connectingWallVector + " " + newWallVector + " " + Vector2.Angle(connectingWallVector, newWallVector));
 
                     if (Mathf.Abs(90f - Vector2.Angle(connectingWallVector, newWallVector)) < 5f)
                     {

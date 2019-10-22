@@ -16,6 +16,8 @@ public class BuildManager : MonoBehaviour
     protected ToolbarMenus toolbarMenus;
     public WallBuilder wallBuilder;
     public DoorBuilder doorBuilder;
+    public SingleObjectBuilder singleObjectBuilder;
+
     public float gridSize;
     public TextMeshProUGUI snapText;
      
@@ -67,12 +69,6 @@ public class BuildManager : MonoBehaviour
 
     public void StartBuilding()
     {
-        //GameObject [] wallStuds = GameObject.FindGameObjectsWithTag("WallStud");
-        //foreach (GameObject wallStud in wallStuds)
-        //{
-        //    wallStud.GetComponent<WallStud>().UseBuildingMaterial();
-        //}
-
         floor.GetComponent<Renderer>().material = floorBuildingMaterial;
 
         isBuilding = true;
@@ -82,12 +78,6 @@ public class BuildManager : MonoBehaviour
 
     public void StopBuilding()
     {
-        //Change colors of studs
-        //GameObject[] wallStuds = GameObject.FindGameObjectsWithTag("WallStud");
-        //foreach (GameObject wallStud in wallStuds)
-        //{
-        //    wallStud.GetComponent<WallStud>().UseNormalMaterial();
-        //}
 
         floor.GetComponent<Renderer>().material = floorNormalMaterial;
 
@@ -95,7 +85,7 @@ public class BuildManager : MonoBehaviour
         {
             wallBuilder.StopBuilding();
         }
-        if (doorBuilder.IsBuilding())
+        if(doorBuilder.IsBuilding())
         {
             doorBuilder.StopBuilding();
         }
@@ -129,12 +119,21 @@ public class BuildManager : MonoBehaviour
     {
         isDeleting = false;
         wallBuilder.StartBuilding();
+        toolbarMenus.CloseAllMenus();
     }
 
     public void OnBuildDoorButtonClickListener()
     {
         isDeleting = false;
         doorBuilder.StartBuilding();
+        toolbarMenus.CloseAllMenus();
+    }
+
+    public void OnSingleObjectBuilderButtonClicked(GameObject prefabToBuild)
+    {
+        isBuilding = true;
+        singleObjectBuilder.StartBuilding(Instantiate(prefabToBuild));
+        toolbarMenus.CloseAllMenus();
     }
 
 

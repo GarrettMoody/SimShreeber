@@ -6,10 +6,19 @@ public class ToolbarMenus : MonoBehaviour
 {
     //Public Variables
     public GameObject buildMenu;
+    public GameObject furnitureMenu;
 
     public void OpenBuildMenu()
     {
+        CloseAllMenus();
         buildMenu.SetActive(true);
+
+    }
+
+    public void OpenFurnitureMenu()
+    {
+        CloseAllMenus();
+        furnitureMenu.SetActive(true);
     }
 
     public void CloseBuildMenu()
@@ -20,5 +29,6 @@ public class ToolbarMenus : MonoBehaviour
     public void CloseAllMenus()
     {
         CloseBuildMenu();
+        furnitureMenu.SetActive(false);
     }
 }

@@ -4,7 +4,7 @@ using System.Collections;
 
 namespace TMPro.Examples
 {
-    
+
     public class CameraController : MonoBehaviour
     {
         public enum CameraModes { Follow, Isometric, Free }
@@ -71,7 +71,7 @@ namespace TMPro.Examples
             if (CameraTarget == null)
             {
                 // If we don't have a target (assigned by the player, create a dummy in the center of the scene).
-                dummyTarget = new GameObject("Camera Target").transform;
+                dummyTarget = new UnityEngine.GameObject("Camera Target").transform;
                 CameraTarget = dummyTarget;
             }
         }
@@ -224,7 +224,7 @@ namespace TMPro.Examples
                     if (dummyTarget == null)
                     {
                         // We need a Dummy Target to anchor the Camera
-                        dummyTarget = new GameObject("Camera Target").transform;
+                        dummyTarget = new UnityEngine.GameObject("Camera Target").transform;
                         dummyTarget.position = CameraTarget.position;
                         dummyTarget.rotation = CameraTarget.rotation;
                         CameraTarget = dummyTarget;

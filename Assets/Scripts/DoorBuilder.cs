@@ -19,7 +19,6 @@ public class DoorBuilder : MonoBehaviour
     private void Start()
     {
         doorHeight = doorPrefab.GetComponent<BoxCollider>().size.y;
-        Debug.Log(doorHeight);
     }
 
     public void StartBuilding()

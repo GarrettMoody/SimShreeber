@@ -5,8 +5,8 @@ using UnityEngine;
 public class ToolbarMenus : MonoBehaviour
 {
     //Public Variables
-    public GameObject buildMenu;
-    public GameObject furnitureMenu;
+    public UnityEngine.GameObject buildMenu;
+    public UnityEngine.GameObject furnitureMenu;
 
     public void OpenBuildMenu()
     {

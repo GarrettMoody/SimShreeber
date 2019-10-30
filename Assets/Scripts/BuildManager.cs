@@ -13,9 +13,10 @@ public class BuildManager : MonoBehaviour
 
     #region Private Variables
 
-    protected ToolbarMenus toolbarMenus;
+    public ToolbarMenus toolbarMenus;
     public WallBuilder wallBuilder;
     public DoorBuilder doorBuilder;
+    public MultiClickObjectBuilder multiClickObjectBuilder;
     public SingleObjectBuilder singleObjectBuilder;
 
     public float gridSize;
@@ -89,6 +90,10 @@ public class BuildManager : MonoBehaviour
         {
             doorBuilder.StopBuilding();
         }
+        if(multiClickObjectBuilder.IsBuilding())
+        {
+            multiClickObjectBuilder.StopBuilding();
+        }
 
         isBuilding = false;
         isDeleting = false;
@@ -129,10 +134,19 @@ public class BuildManager : MonoBehaviour
         toolbarMenus.CloseAllMenus();
     }
 
+    public void OnBuildConveyorButtonClickListener()
+    {
+        isDeleting = false;
+        multiClickObjectBuilder.StartBuilding();
+        toolbarMenus.CloseAllMenus();
+    }
+
     public void OnSingleObjectBuilderButtonClicked(GameObject prefabToBuild)
     {
         isBuilding = true;
-        singleObjectBuilder.StartBuilding(Instantiate(prefabToBuild));
+        GameObject newObject = Instantiate(prefabToBuild);
+        //singleObjectBuilder.StartBuilding(Instantiate(prefabToBuild));
+        newObject.GetComponent<SingleObjectBuilder>().StartBuilding();
         toolbarMenus.CloseAllMenus();
     }
 

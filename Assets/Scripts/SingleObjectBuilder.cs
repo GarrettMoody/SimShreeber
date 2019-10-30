@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class SingleObjectBuilder : MonoBehaviour
 {
-    public BuildManager buildManager;
+    //public BuildManager buildManager;
+    public Vector3 buildOffset;
+
 
     private bool isBuilding;
-    private GameObject objectInHand;
+    //private GameObject objectInHand;
 
 
     // Update is called once per frame
@@ -15,38 +17,37 @@ public class SingleObjectBuilder : MonoBehaviour
     {
         if(isBuilding)
         {
-            if(buildManager.GetSnapToGridToggle())
-            {
-                objectInHand.transform.position = buildManager.GetClosestGridPoint(buildManager.GetMousePoint());
-            } else
-            {
-                objectInHand.transform.position = buildManager.GetMousePoint();
-
-            }
+            
+           this.transform.position = BuildHelper.GetMousePoint() + buildOffset;
 
             if(Input.GetMouseButtonDown(0))
             {
-                objectInHand.GetComponent<MeshCollider>().enabled = true;
-                objectInHand = null;
+                if(this.GetComponent<Collider>() != null)
+                {
+                    this.GetComponent<Collider>().enabled = true;
+                }
+                if(this.GetComponent<Rigidbody>() != null)
+                {
+                    this.GetComponent<Rigidbody>().isKinematic = false;
+                }
                 isBuilding = false;
             }
             if(Input.GetMouseButtonDown(1))
             {
-                Destroy(objectInHand);
+                Destroy(this.gameObject);
                 isBuilding = false;
-                buildManager.StopBuilding();
+                //buildManager.StopBuilding();
             }
             if(Input.GetKeyDown(KeyCode.Tab))
             {
-                objectInHand.transform.Rotate(Vector3.up, 45f);
+                this.transform.Rotate(Vector3.up, 45f);
             }
             
         }
     }
 
-    public void StartBuilding(GameObject objectToBuild)
+    public void StartBuilding()
     {
         isBuilding = true;
-        objectInHand = objectToBuild;
     }
 }

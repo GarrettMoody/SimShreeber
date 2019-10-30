@@ -94,6 +94,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 1
+  direction: {x: 0, y: 0, z: 1}
 --- !u!64 &8945839448140147188
 MeshCollider:
   m_ObjectHideFlags: 0

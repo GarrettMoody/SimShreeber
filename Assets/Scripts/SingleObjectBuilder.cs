@@ -22,9 +22,13 @@ public class SingleObjectBuilder : MonoBehaviour
 
             if(Input.GetMouseButtonDown(0))
             {
-                if(this.GetComponent<Collider>() != null)
+                foreach(Collider colliders in this.GetComponents<Collider>())
                 {
-                    this.GetComponent<Collider>().enabled = true;
+                    colliders.enabled = true;
+                }
+                foreach(Collider colliders in this.GetComponentsInChildren<Collider>())
+                {
+                    colliders.enabled = true;
                 }
                 if(this.GetComponent<Rigidbody>() != null)
                 {

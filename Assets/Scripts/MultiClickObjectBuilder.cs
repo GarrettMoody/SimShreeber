@@ -20,8 +20,8 @@ public class MultiClickObjectBuilder : MonoBehaviour
 
     public void Start()
     {
-        endpointHeight = endpointPrefab.GetComponent<MeshCollider>().bounds.size.y;
-        objectHeight = objectPrefab.GetComponent<MeshCollider>().bounds.size.y;
+        endpointHeight = endpointPrefab.GetComponent<MeshCollider>().sharedMesh.bounds.size.y;
+        objectHeight = objectPrefab.GetComponent<MeshCollider>().sharedMesh.bounds.size.y;
     }
 
     // Update is called once per frame

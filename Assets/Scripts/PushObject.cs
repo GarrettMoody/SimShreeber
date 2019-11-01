@@ -10,18 +10,33 @@ public class PushObject : MonoBehaviour
 
     private Dictionary<GameObject, bool> objectsBeingPushed = new Dictionary<GameObject, bool>();
 
+
+    /// <summary>
+    /// When the object hits the trigger, it will also be added to the dictionary
+    /// </summary>
+    /// <param name="other"></param>
     public void OnTriggerEnter(Collider other)
     {
         objectsBeingPushed.Add(other.gameObject, true);
     }
 
+    /// <summary>
+    /// If there is an object transform for the object being pushed to move towards, it will go there. Once
+    /// it gets close enough to the "endpoint" it will just continue forward. Since there could be multiple
+    /// objects in the trigger at the same time, we need to handle each one separately using the dicitonary.
+    /// </summary>
+    /// <param name="other"></param>
     public void OnTriggerStay(Collider other)
     {
         Vector3 velocity;
-        if(Vector3.Distance(objectTransform.position, other.transform.position) < 0.2f)
+        if(objectTransform != null)
         {
-            objectsBeingPushed[other.gameObject] = false;
+            if (Vector3.Distance(objectTransform.position, other.transform.position) < 0.2f)
+            {
+                objectsBeingPushed[other.gameObject] = false;
+            }
         }
+       
             
         if (objectTransform != null && objectsBeingPushed[other.gameObject])
         {
@@ -34,6 +49,10 @@ public class PushObject : MonoBehaviour
         other.GetComponent<Rigidbody>().velocity = velocity;
     }
 
+    /// <summary>
+    /// When the object leaves, clean up the dictionary.
+    /// </summary>
+    /// <param name="other"></param>
     public void OnTriggerExit(Collider other)
     {
         objectsBeingPushed.Remove(other.gameObject);

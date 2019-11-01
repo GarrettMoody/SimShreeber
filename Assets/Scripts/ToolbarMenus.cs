@@ -5,8 +5,10 @@ using UnityEngine;
 public class ToolbarMenus : MonoBehaviour
 {
     //Public Variables
-    public UnityEngine.GameObject buildMenu;
-    public UnityEngine.GameObject furnitureMenu;
+    public GameObject buildMenu;
+    public GameObject furnitureMenu;
+    public GameObject marketMenu;
+
 
     public void OpenBuildMenu()
     {
@@ -19,6 +21,12 @@ public class ToolbarMenus : MonoBehaviour
     {
         CloseAllMenus();
         furnitureMenu.SetActive(true);
+    }
+
+    public void OpenMarketMenu()
+    {
+        CloseAllMenus();
+        marketMenu.SetActive(true);
     }
 
     public void CloseBuildMenu()

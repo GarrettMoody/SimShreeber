@@ -1,9 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class CheeseMaker : MonoBehaviour
 {
+    public static Func<bool> MakeCheeseRequest;
+    public static event Action CheeseMade = delegate { };
+
     public ObjectInstantiator objectInstantiator;
     public CooldownBar cooldownBar;
     
@@ -12,6 +16,7 @@ public class CheeseMaker : MonoBehaviour
         if(!cooldownBar.isCooling)
         {
             cooldownBar.StartCooling();
+            CheeseMade();
             return objectInstantiator.InstantiateObject();
         } else
         {
@@ -21,12 +26,14 @@ public class CheeseMaker : MonoBehaviour
 
     public void OnMouseDown()
     {
-        GameObject newCheese = MakeCheese();
-        if(newCheese != null)
+        bool canMakeCheese = MakeCheeseRequest();
+        if(canMakeCheese)
         {
-            newCheese.GetComponent<Rigidbody>().isKinematic = false;
+            GameObject newCheese = MakeCheese();
+            if (newCheese != null)
+            {
+                newCheese.GetComponent<Rigidbody>().isKinematic = false;
+            }
         }
     }
-
-   
 }

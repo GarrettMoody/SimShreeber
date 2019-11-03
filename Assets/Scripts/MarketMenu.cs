@@ -22,13 +22,25 @@ public class MarketMenu : MonoBehaviour
 
     public void OnEnable()
     {
-        casesOfCheeseText.text = gameManager.casesOfCheese.ToString();
-        remainingShelvesText.text = gameManager.shelvesRemaining.ToString();
+        casesOfCheeseText.text = gameManager.warehouseManager.casesOfCheese.ToString();
+        remainingShelvesText.text = gameManager.warehouseManager.shelfSlotsRemaining.ToString();
         cheeseInputValue = 1;
         cheeseInputField.text = cheeseInputValue.ToString();
         pricePerCheeseValue = 27.00f;
         pricePerCheese.text = pricePerCheeseValue.ToString("C");
         CalculateTotalPriceValue();
+    }
+
+    public void OnBuyButtonClicked()
+    {
+        //If there is enough money and shelf slots available
+        if (totalPriceValue <= gameManager.money && cheeseInputValue <= gameManager.warehouseManager.shelfSlotsRemaining)
+        {
+            gameManager.SubtractMoney(totalPriceValue);
+            gameManager.warehouseManager.AddPackagesToShelves(cheeseInputValue);
+        }
+
+        this.gameObject.SetActive(false);
     }
 
     public void OnMinusButtonClicked()
@@ -54,5 +66,7 @@ public class MarketMenu : MonoBehaviour
         totalPriceValue = cheeseInputValue * pricePerCheeseValue;
         totalPrice.text = totalPriceValue.ToString("C");
     }
+
+
 
 }

@@ -16,6 +16,8 @@ public class MarketMenu : MonoBehaviour
     public InputField cheeseInputField;
     public Button buyButton;
 
+    public PlayerMoneyManager playerMoney;
+
     private int cheeseInputValue;
     private float pricePerCheeseValue;
     private float totalPriceValue;
@@ -34,9 +36,9 @@ public class MarketMenu : MonoBehaviour
     public void OnBuyButtonClicked()
     {
         //If there is enough money and shelf slots available
-        if (totalPriceValue <= gameManager.money && cheeseInputValue <= gameManager.warehouseManager.shelfSlotsRemaining)
+        if (totalPriceValue <= playerMoney.GetMoney() && cheeseInputValue <= gameManager.warehouseManager.shelfSlotsRemaining)
         {
-            gameManager.SubtractMoney(totalPriceValue);
+            playerMoney.SubtractMoney(totalPriceValue);
             gameManager.warehouseManager.AddPackagesToShelves(cheeseInputValue);
         }
 

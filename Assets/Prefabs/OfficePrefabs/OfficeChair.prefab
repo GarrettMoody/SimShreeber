@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 4523812470834843366}
   - component: {fileID: 8809260039312947412}
   - component: {fileID: -3333616552445594171}
+  - component: {fileID: -140791286793225983}
   m_Layer: 0
   m_Name: OfficeChair
   m_TagString: Untagged
@@ -17988,3 +17989,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buildOffset: {x: 0, y: 0, z: 0}
+  priceTextPrefab: {fileID: -3458188364397675048, guid: 98abbd940dc5c45b8bf525df42719328,
+    type: 3}
+--- !u!114 &-140791286793225983
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9090686578598369608}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87f6cea6592cc4c10abc9c9d3e32ff52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  priceOfObject: 0

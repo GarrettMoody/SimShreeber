@@ -45,6 +45,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isFilled: 0
   parent: {fileID: 0}
+  children: []
 --- !u!1 &324045203
 GameObject:
   m_ObjectHideFlags: 0
@@ -90,6 +91,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isFilled: 0
   parent: {fileID: 0}
+  children: []
 --- !u!1 &327581378
 GameObject:
   m_ObjectHideFlags: 0
@@ -135,6 +137,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isFilled: 0
   parent: {fileID: 0}
+  children: []
 --- !u!1 &558821682
 GameObject:
   m_ObjectHideFlags: 0
@@ -181,6 +184,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isFilled: 0
   parent: {fileID: 0}
+  children: []
 --- !u!1 &859626896
 GameObject:
   m_ObjectHideFlags: 0
@@ -226,6 +230,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isFilled: 0
   parent: {fileID: 0}
+  children: []
 --- !u!1 &1236182250
 GameObject:
   m_ObjectHideFlags: 0
@@ -271,6 +276,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isFilled: 0
   parent: {fileID: 0}
+  children: []
 --- !u!1 &1247559030
 GameObject:
   m_ObjectHideFlags: 0
@@ -316,6 +322,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isFilled: 0
   parent: {fileID: 0}
+  children: []
 --- !u!1 &1570333509
 GameObject:
   m_ObjectHideFlags: 0
@@ -361,6 +368,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isFilled: 0
   parent: {fileID: 0}
+  children: []
 --- !u!1 &1802895717
 GameObject:
   m_ObjectHideFlags: 0
@@ -407,6 +415,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isFilled: 0
   parent: {fileID: 0}
+  children: []
 --- !u!1 &1828561002
 GameObject:
   m_ObjectHideFlags: 0
@@ -452,6 +461,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isFilled: 0
   parent: {fileID: 0}
+  children: []
 --- !u!1 &3826018606800593152
 GameObject:
   m_ObjectHideFlags: 0
@@ -466,6 +476,7 @@ GameObject:
   - component: {fileID: 1260921643}
   - component: {fileID: 1260921644}
   - component: {fileID: -567014127520287111}
+  - component: {fileID: -6291834511295151491}
   m_Layer: 0
   m_Name: MetalCabinet
   m_TagString: Untagged
@@ -581,3 +592,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buildOffset: {x: 0, y: 0, z: 0}
+  priceTextPrefab: {fileID: -3458188364397675048, guid: 98abbd940dc5c45b8bf525df42719328,
+    type: 3}
+--- !u!114 &-6291834511295151491
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3826018606800593152}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87f6cea6592cc4c10abc9c9d3e32ff52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  priceOfObject: 200

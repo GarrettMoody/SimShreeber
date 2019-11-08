@@ -9,21 +9,32 @@ public class MultiClickObjectBuilder : MonoBehaviour
     public GameObject endpointPrefab;
     public GameObject objectPrefab;
     public bool continueBuilding;
+    public FloatingText priceTextPrefab;
+
 
     private bool isBuilding;
     private GameObject objectStart;
     private GameObject objectEnd;
     private GameObject objectBeingBuilt;
     private bool startSet;
-    private float objectHeight;
     private float endpointHeight;
+    private Price price;
+    private float priceValue;
+    private FloatingText priceText;
+    private bool isShowingPrice;
+
+
 
     public void Start()
     {
         endpointHeight = endpointPrefab.GetComponent<MeshCollider>().sharedMesh.bounds.size.y;
-        objectHeight = objectPrefab.GetComponent<MeshCollider>().sharedMesh.bounds.size.y;
+        if (this.gameObject.GetComponent<Price>() != null)
+        {
+            price = this.gameObject.GetComponent<Price>();
+        }
     }
 
+   
     // Update is called once per frame
     void Update()
     {
@@ -42,6 +53,11 @@ public class MultiClickObjectBuilder : MonoBehaviour
 
 
             mousePoint = new Vector3(mousePoint.x, mousePoint.y + endpointHeight / 2, mousePoint.z);
+
+            if (isShowingPrice)
+            {
+                priceText.transform.position = mousePoint + new Vector3(0, .2f, 0);
+            }
 
             //Build hasn't started yet
             if (!startSet)
@@ -94,6 +110,7 @@ public class MultiClickObjectBuilder : MonoBehaviour
         isBuilding = true;
         startSet = false;
         objectStart = Instantiate(endpointPrefab);
+        ShowPrice();
     }
 
     /// <summary>
@@ -119,10 +136,12 @@ public class MultiClickObjectBuilder : MonoBehaviour
             Destroy(objectEnd.gameObject);
             Destroy(objectBeingBuilt.gameObject);
         }
+        HidePrice();
     }
 
     public void ContinueBuild()
     {
+        PlayerMoneyManager.Instance().SubtractMoney(priceValue);
         //Place wall and continue building
         //Enable Colliders
         ActivateColliders();
@@ -136,6 +155,7 @@ public class MultiClickObjectBuilder : MonoBehaviour
 
     public void UpdateObject()
     {
+        UpdatePrice();
         objectStart.transform.LookAt(objectEnd.transform);
 
         float distance = Vector3.Distance(objectStart.transform.position, objectEnd.transform.position);
@@ -175,6 +195,39 @@ public class MultiClickObjectBuilder : MonoBehaviour
         foreach (Collider colliders in objectBeingBuilt.GetComponents<Collider>())
         {
             colliders.enabled = true;
+        }
+    }
+
+    public void ShowPrice()
+    {
+        if (priceTextPrefab != null && price != null)
+        {
+            UpdatePrice();
+            priceText = Instantiate(priceTextPrefab);
+            priceText.SetText(priceValue.ToString("C"));
+            isShowingPrice = true;
+        }
+    }
+
+    public void HidePrice()
+    {
+        if (priceText != null)
+        {
+            Destroy(priceText.gameObject);
+            isShowingPrice = false;
+        }
+    }
+
+    private void UpdatePrice()
+    {
+        if(objectStart != null && objectEnd != null && price != null)
+        {
+            priceValue = price.priceOfObject * Vector3.Distance(objectStart.transform.position, objectEnd.transform.position);
+            priceText.SetText(priceValue.ToString("C"));
+        }
+        else
+        {
+            priceValue = 0;
         }
     }
 }

@@ -2204,7 +2204,7 @@ MonoBehaviour:
         m_MethodName: OnSingleObjectBuilderButtonClicked
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 4086143101327144328, guid: e15105e428cab4499a4212ade5a93900,
+          m_ObjectArgument: {fileID: 3829539788222322115, guid: d1de4a95eb6c84561acbeb85d7650a20,
             type: 3}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
           m_IntArgument: 0
@@ -2863,6 +2863,7 @@ MonoBehaviour:
   plusButton: {fileID: 338197765}
   cheeseInputField: {fileID: 2130913997}
   buyButton: {fileID: 940217650}
+  playerMoney: {fileID: 11400000, guid: 758233a3275594a08986dd7ced1952a5, type: 2}
 --- !u!1 &528848234
 GameObject:
   m_ObjectHideFlags: 0
@@ -3038,9 +3039,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 743474c6aeefd41d3a68d3bf3e06ca0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameManager: {fileID: 1017551132}
   storagePackagePrefab: {fileID: 5484144067651475367, guid: bd7044e87a5334b70bbf02735a0ef1c8,
     type: 3}
+  playerMoneyManager: {fileID: 11400000, guid: 758233a3275594a08986dd7ced1952a5, type: 2}
 --- !u!1 &533083859
 GameObject:
   m_ObjectHideFlags: 0
@@ -4669,50 +4670,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 894052867}
   m_CullTransparentMesh: 0
---- !u!1 &898249216
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 898249217}
-  - component: {fileID: 898249218}
-  m_Layer: 0
-  m_Name: SingleObjectBuilder
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &898249217
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 898249216}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 1733306367}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &898249218
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 898249216}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bacdc679d06f24b6ba868fc4faa6362f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  buildOffset: {x: 0, y: 0, z: 0}
 --- !u!1 &912754152
 GameObject:
   m_ObjectHideFlags: 0
@@ -9983,7 +9940,6 @@ MonoBehaviour:
   wallBuilder: {fileID: 1497079567}
   doorBuilder: {fileID: 1230822363}
   multiClickObjectBuilder: {fileID: 1938701626}
-  singleObjectBuilder: {fileID: 898249218}
   gridSize: 1
   snapText: {fileID: 1140758853}
   floor: {fileID: 1594474232}
@@ -10003,7 +9959,6 @@ Transform:
   m_Children:
   - {fileID: 1497079566}
   - {fileID: 1230822362}
-  - {fileID: 898249217}
   - {fileID: 1938701625}
   m_Father: {fileID: 1544883301}
   m_RootOrder: 1
@@ -10123,6 +10078,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moneyText: {fileID: 964098063}
+  playerMoney: {fileID: 11400000, guid: 758233a3275594a08986dd7ced1952a5, type: 2}
 --- !u!1 &1789761076
 GameObject:
   m_ObjectHideFlags: 0
@@ -11227,6 +11183,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1938701625}
   - component: {fileID: 1938701626}
+  - component: {fileID: 1938701627}
   m_Layer: 0
   m_Name: ConveyorBuilder
   m_TagString: Untagged
@@ -11246,7 +11203,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1733306367}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1938701626
 MonoBehaviour:
@@ -11266,6 +11223,21 @@ MonoBehaviour:
   objectPrefab: {fileID: 2781416817347931806, guid: 547da209dc4d24b3c8aacc0b5251e1a3,
     type: 3}
   continueBuilding: 1
+  priceTextPrefab: {fileID: -3458188364397675048, guid: 98abbd940dc5c45b8bf525df42719328,
+    type: 3}
+--- !u!114 &1938701627
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1938701624}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87f6cea6592cc4c10abc9c9d3e32ff52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  priceOfObject: 5
 --- !u!1 &1944030008
 GameObject:
   m_ObjectHideFlags: 0

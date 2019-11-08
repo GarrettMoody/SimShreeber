@@ -5,10 +5,10 @@ using UnityEngine;
 
 public class WarehouseManager : MonoBehaviour
 {
-    public GameManager gameManager;
     public float shelfSlotsRemaining { get; private set; }
     public GameObject storagePackagePrefab;
     public float casesOfCheese { get; private set; }
+	public PlayerMoneyManager playerMoneyManager;
 
 
     private List<WarehouseShelf> shelvesBuilt = new List<WarehouseShelf>();
@@ -29,7 +29,7 @@ public class WarehouseManager : MonoBehaviour
     private void CheeseCollector_PackageInCollector(Package obj)
     {
         Destroy(obj.gameObject);
-        gameManager.AddMoney(150);
+		playerMoneyManager.AddMoney(150);
     }
 
     private void CheeseMaker_CheeseMade()

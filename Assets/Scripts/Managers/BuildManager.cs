@@ -17,7 +17,6 @@ public class BuildManager : MonoBehaviour
     public WallBuilder wallBuilder;
     public DoorBuilder doorBuilder;
     public MultiClickObjectBuilder multiClickObjectBuilder;
-    public SingleObjectBuilder singleObjectBuilder;
 
     public float gridSize;
     public TextMeshProUGUI snapText;

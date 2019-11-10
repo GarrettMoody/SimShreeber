@@ -2,22 +2,30 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(BuildableItem))]
 public class SingleObjectBuilder : MonoBehaviour
 {
     public Vector3 buildOffset;
-    public FloatingText priceTextPrefab;
 
-    private Price price;
     private FloatingText priceText;
     private bool isBuilding;
     private bool isShowingPrice;
 
+    private GameObject clickMenuPrefab;
+    private GameObject priceTextPrefab;
+    private BuildableItem item;
+
+
     public void Awake()
     {
-        if(this.gameObject.GetComponent<Price>() != null)
-        {
-            price = this.gameObject.GetComponent<Price>();
-        }
+        priceTextPrefab = (GameObject)Resources.Load("Prefabs/FloatingText");
+        clickMenuPrefab = (GameObject)Resources.Load("Prefabs/ObjectClickMenu");
+        item = this.GetComponent<BuildableItem>();
+    }
+
+    public void OnDestroy()
+    {
+        UnsubscribeToObjectClickMenu();
     }
 
     // Update is called once per frame
@@ -34,28 +42,11 @@ public class SingleObjectBuilder : MonoBehaviour
             }
 
             //Left Click - Place Object
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButtonDown(0) && !BuildHelper.IsPointerOverGameObject())
             {
                 if(CanBuild())
                 {
-                    if(price != null)
-                    {
-                        PlayerMoneyManager.Instance().SubtractMoney(price.priceOfObject);
-                    }
-
-                    foreach (Collider colliders in this.GetComponents<Collider>())
-                    {
-                        colliders.enabled = true;
-                    }
-                    foreach (Collider colliders in this.GetComponentsInChildren<Collider>())
-                    {
-                        colliders.enabled = true;
-                    }
-                    if (this.GetComponent<Rigidbody>() != null)
-                    {
-                        this.GetComponent<Rigidbody>().isKinematic = false;
-                    }
-                    StopBuilding();
+                    SetObjectDown();
                 }
             }
             //Right Click - Cancel Build
@@ -69,7 +60,50 @@ public class SingleObjectBuilder : MonoBehaviour
             {
                 this.transform.Rotate(Vector3.up, 45f);
             }
-            
+        }
+    }
+
+    public void OnMouseOver()
+    {
+        //On left click on object
+        if (Input.GetMouseButtonDown(1))
+        {
+            //If mouse not over UI component
+            if (!BuildHelper.IsPointerOverGameObject())
+            {
+                //If Context menu exists
+                if (ObjectClickMenu.Instance() != null)
+                {
+                    HideObjectClickMenu();
+                }
+
+                //Create new instance of context menu and subscribe to its events
+                Instantiate(clickMenuPrefab, BuildHelper.GetMousePointGameObject().transform).GetComponent<ObjectClickMenu>();
+                SubscribeToObjectClickMenu();
+            }
+        }
+    }
+
+    private void ObjectClickMenu_SellButtonClicked()
+    {
+        PlayerMoneyManager.Instance().AddMoney(item.sellPrice);
+        Destroy(this.gameObject);
+        HideObjectClickMenu();
+    }
+
+    private void ObjectClickMenu_MoveButtonClicked()
+    {
+        PickObjectUp();
+        HideObjectClickMenu();
+    }
+
+    private void HideObjectClickMenu()
+    {
+        UnsubscribeToObjectClickMenu();
+        if (ObjectClickMenu.Instance().gameObject != null)
+        {
+            ObjectClickMenu.RemoveAllEvents();
+            Destroy(ObjectClickMenu.Instance().gameObject);
         }
     }
 
@@ -88,22 +122,28 @@ public class SingleObjectBuilder : MonoBehaviour
     public bool CanBuild()
     { 
         //If there is a price on the objec
-        if(price != null)
+        if(item.price > 0)
         {
             //Return if we have enough money
-            return PlayerMoneyManager.Instance().GetMoney() >= price.priceOfObject;
+            return PlayerMoneyManager.Instance().GetMoney() >= item.price;
         } else
         {
             return true;
         }
     }
 
+    public void SellObject()
+    {
+        Destroy(this.gameObject);
+        PlayerMoneyManager.Instance().AddMoney(item.sellPrice);
+    }
+
     public void ShowPrice()
     {
-        if(priceTextPrefab != null && price != null)
+        if(priceTextPrefab != null && item.price > 0)
         {
-            priceText = Instantiate(priceTextPrefab);
-            priceText.SetText(price.priceOfObject.ToString("C"));
+            priceText = Instantiate(priceTextPrefab).GetComponent<FloatingText>();
+            priceText.SetText(item.price.ToString("C"));
             isShowingPrice = true;
         }
     }
@@ -115,5 +155,57 @@ public class SingleObjectBuilder : MonoBehaviour
             Destroy(priceText.gameObject);
             isShowingPrice = false;
         }
+    }
+
+    public void SetObjectDown()
+    {
+        if (item.price > 0 && !item.isItemPaid)
+        {
+            PlayerMoneyManager.Instance().SubtractMoney(item.price);
+            item.isItemPaid = true;
+        }
+
+        foreach (Collider colliders in this.GetComponents<Collider>())
+        {
+            colliders.enabled = true;
+        }
+        foreach (Collider colliders in this.GetComponentsInChildren<Collider>())
+        {
+            colliders.enabled = true;
+        }
+        if (this.GetComponent<Rigidbody>() != null)
+        {
+            this.GetComponent<Rigidbody>().isKinematic = false;
+        }
+        StopBuilding();
+    }
+
+    public void PickObjectUp()
+    {
+        foreach (Collider colliders in this.GetComponents<Collider>())
+        {
+            colliders.enabled = false;
+        }
+        foreach (Collider colliders in this.GetComponentsInChildren<Collider>())
+        {
+            colliders.enabled = false;
+        }
+        if (this.GetComponent<Rigidbody>() != null)
+        {
+            this.GetComponent<Rigidbody>().isKinematic = true;
+        }
+        isBuilding = true;
+    }
+
+    private void SubscribeToObjectClickMenu()
+    {
+        ObjectClickMenu.MoveButtonClicked += ObjectClickMenu_MoveButtonClicked;
+        ObjectClickMenu.SellButtonClicked += ObjectClickMenu_SellButtonClicked;
+    }
+
+    private void UnsubscribeToObjectClickMenu()
+    {
+        ObjectClickMenu.MoveButtonClicked -= ObjectClickMenu_MoveButtonClicked;
+        ObjectClickMenu.SellButtonClicked -= ObjectClickMenu_SellButtonClicked;
     }
 }

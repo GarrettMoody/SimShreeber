@@ -24,10 +24,10 @@ public class CheeseMaker : MonoBehaviour
         }
     }
 
-    public void OnMouseDown()
+    public void OnMouseUpAsButton()
     {
         bool canMakeCheese = MakeCheeseRequest();
-        if(canMakeCheese)
+        if (canMakeCheese)
         {
             GameObject newCheese = MakeCheese();
             if (newCheese != null)

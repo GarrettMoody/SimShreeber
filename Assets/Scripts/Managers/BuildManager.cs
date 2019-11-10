@@ -18,7 +18,9 @@ public class BuildManager : MonoBehaviour
     public DoorBuilder doorBuilder;
     public MultiClickObjectBuilder multiClickObjectBuilder;
 
-    public float gridSize;
+	public static float gridSize;
+
+    public static float GetGridSize() { return gridSize; }
     public TextMeshProUGUI snapText;
      
     public GameObject floor;
@@ -48,11 +50,11 @@ public class BuildManager : MonoBehaviour
 
         if (isDeleting)
         {
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButtonDown(0) && !BuildHelper.IsPointerOverGameObject())
             {
-                if (GetMousePointGameObject().name != "Floor")
+                if (BuildHelper.GetMousePointGameObject().name != "Floor")
                 {
-                    Destroy(GetMousePointGameObject());
+                    Destroy(BuildHelper.GetMousePointGameObject());
                 }
             }
         }
@@ -164,60 +166,7 @@ public class BuildManager : MonoBehaviour
     }
 
 
-    public Vector3 GetClosestGridPoint(Vector3 point)
-    {
-        float xPoint = Mathf.RoundToInt(point.x / gridSize);
-        float yPoint = Mathf.RoundToInt(point.y / gridSize);
-        float zPoint = Mathf.RoundToInt(point.z / gridSize);
-
-        return new Vector3(xPoint * gridSize, yPoint * gridSize, zPoint * gridSize);
-    }
-
-    public Vector3 GetClosestGridPoint(Vector3 point, Vector3 offset)
-    {
-        point -= offset;
-
-        float xPoint = Mathf.RoundToInt(point.x / gridSize);
-        float yPoint = Mathf.RoundToInt(point.y / gridSize);
-        float zPoint = Mathf.RoundToInt(point.z / gridSize);
-
-        Vector3 result = new Vector3(xPoint * gridSize, yPoint * gridSize, zPoint * gridSize);
-        result += offset;
-        return result;
-    }
-
-    /// <summary>
-    /// Returns the point on the object the mouse pointer is currently pointing at.
-    /// </summary>
-    /// <returns></returns>
-    public Vector3 GetMousePoint()
-    {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
-        if (Physics.Raycast(ray, out hit, Mathf.Infinity))
-        { 
-            return hit.point;
-        }
-
-        return Vector3.zero;
-    }
-
-    /// <summary>
-    /// Returns the GameObject the mouse pointer is pointing at.
-    /// </summary>
-    /// <returns></returns>
-    public GameObject GetMousePointGameObject()
-    {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
-
-        if (Physics.Raycast(ray, out hit, Mathf.Infinity))
-        {
-            return hit.collider.gameObject;
-        }
-
-        return null;
-    }
+   
 
     public bool IsWall(GameObject gameObject)
     {

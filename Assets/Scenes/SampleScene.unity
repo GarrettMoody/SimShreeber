@@ -9940,7 +9940,6 @@ MonoBehaviour:
   wallBuilder: {fileID: 1497079567}
   doorBuilder: {fileID: 1230822363}
   multiClickObjectBuilder: {fileID: 1938701626}
-  gridSize: 1
   snapText: {fileID: 1140758853}
   floor: {fileID: 1594474232}
   floorNormalMaterial: {fileID: 2100000, guid: 7aee1f85c98bc43fb889f3ab21b0c813, type: 2}
@@ -11183,7 +11182,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1938701625}
   - component: {fileID: 1938701626}
-  - component: {fileID: 1938701627}
   m_Layer: 0
   m_Name: ConveyorBuilder
   m_TagString: Untagged
@@ -11225,19 +11223,7 @@ MonoBehaviour:
   continueBuilding: 1
   priceTextPrefab: {fileID: -3458188364397675048, guid: 98abbd940dc5c45b8bf525df42719328,
     type: 3}
---- !u!114 &1938701627
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1938701624}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 87f6cea6592cc4c10abc9c9d3e32ff52, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  priceOfObject: 5
+  price: 5
 --- !u!1 &1944030008
 GameObject:
   m_ObjectHideFlags: 0

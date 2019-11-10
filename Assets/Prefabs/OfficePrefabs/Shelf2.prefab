@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 4201152942578565438}
   - component: {fileID: 4771416848597747696}
   - component: {fileID: -3008544114647687369}
-  - component: {fileID: 3070787592335800435}
   m_Layer: 0
   m_Name: Shelf2
   m_TagString: Untagged
@@ -4295,18 +4294,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buildOffset: {x: 0, y: 0, z: 0}
-  priceTextPrefab: {fileID: -3458188364397675048, guid: 98abbd940dc5c45b8bf525df42719328,
-    type: 3}
---- !u!114 &3070787592335800435
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6609949159335712163}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 87f6cea6592cc4c10abc9c9d3e32ff52, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  priceOfObject: 0

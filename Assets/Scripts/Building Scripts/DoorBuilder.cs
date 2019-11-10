@@ -25,7 +25,7 @@ public class DoorBuilder : MonoBehaviour
     {
         buildManager.StartBuilding();
         door = Instantiate(doorPrefab);
-        door.transform.position = buildManager.GetMousePoint();
+        door.transform.position = BuildHelper.GetMousePoint();
         isBuilding = true;
     }
 
@@ -34,18 +34,18 @@ public class DoorBuilder : MonoBehaviour
     {
         if(isBuilding)
         {
-            Vector3 mousePoint = buildManager.GetMousePoint();
+            Vector3 mousePoint = BuildHelper.GetMousePoint();
 
-            if (buildManager.IsWall(buildManager.GetMousePointGameObject()))
+            if (buildManager.IsWall(BuildHelper.GetMousePointGameObject()))
             {
                 //If pointing to new wall
-                if (wall != buildManager.GetMousePointGameObject().GetComponent<Wall>())
+                if (wall != BuildHelper.GetMousePointGameObject().GetComponent<Wall>())
                 {
                     if (wall != null)
                     {
                         wall.UseNormalMaterial();
                     }
-                    wall = buildManager.GetMousePointGameObject().GetComponent<Wall>();
+                    wall = BuildHelper.GetMousePointGameObject().GetComponent<Wall>();
 
                     wall.UseInvisibleMaterial();
                     door.transform.position = new Vector3(mousePoint.x, doorHeight/2, mousePoint.z);
@@ -90,9 +90,9 @@ public class DoorBuilder : MonoBehaviour
 
             if(Input.GetMouseButtonDown(0))
             {
-                if (buildManager.IsWall(buildManager.GetMousePointGameObject()))
+                if (buildManager.IsWall(BuildHelper.GetMousePointGameObject()))
                 {
-                    Destroy(buildManager.GetMousePointGameObject());
+                    Destroy(BuildHelper.GetMousePointGameObject());
                     leftWall = null;
                     rightWall = null;
                     door.GetComponent<BoxCollider>().enabled = true;

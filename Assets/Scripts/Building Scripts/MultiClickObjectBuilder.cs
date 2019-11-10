@@ -10,6 +10,7 @@ public class MultiClickObjectBuilder : MonoBehaviour
     public GameObject objectPrefab;
     public bool continueBuilding;
     public FloatingText priceTextPrefab;
+    public float price;
 
 
     private bool isBuilding;
@@ -18,20 +19,13 @@ public class MultiClickObjectBuilder : MonoBehaviour
     private GameObject objectBeingBuilt;
     private bool startSet;
     private float endpointHeight;
-    private Price price;
     private float priceValue;
     private FloatingText priceText;
     private bool isShowingPrice;
 
-
-
     public void Start()
     {
         endpointHeight = endpointPrefab.GetComponent<MeshCollider>().sharedMesh.bounds.size.y;
-        if (this.gameObject.GetComponent<Price>() != null)
-        {
-            price = this.gameObject.GetComponent<Price>();
-        }
     }
 
    
@@ -44,11 +38,11 @@ public class MultiClickObjectBuilder : MonoBehaviour
 
             if (buildManager.GetSnapToGridToggle())
             {
-                mousePoint = buildManager.GetClosestGridPoint(buildManager.GetMousePoint());
+                mousePoint = BuildHelper.GetClosestGridPoint(BuildHelper.GetMousePoint());
             }
             else
             {
-                mousePoint = buildManager.GetMousePoint();
+                mousePoint = BuildHelper.GetMousePoint();
             }
 
 
@@ -62,7 +56,7 @@ public class MultiClickObjectBuilder : MonoBehaviour
             //Build hasn't started yet
             if (!startSet)
             {
-                GameObject mouseObject = buildManager.GetMousePointGameObject();
+                GameObject mouseObject = BuildHelper.GetMousePointGameObject();
 
                 if (mouseObject != null)
                 {
@@ -148,9 +142,9 @@ public class MultiClickObjectBuilder : MonoBehaviour
 
         objectStart = objectEnd;
         objectBeingBuilt = Instantiate(objectPrefab);
-        objectBeingBuilt.transform.position = buildManager.GetMousePoint();
+        objectBeingBuilt.transform.position = BuildHelper.GetMousePoint();
         objectEnd = Instantiate(endpointPrefab);
-        objectEnd.transform.position = buildManager.GetMousePoint();
+        objectEnd.transform.position = BuildHelper.GetMousePoint();
     }
 
     public void UpdateObject()
@@ -172,8 +166,8 @@ public class MultiClickObjectBuilder : MonoBehaviour
         objectStart.GetComponent<Collider>().enabled = true;
         objectEnd = Instantiate(endpointPrefab);
         objectBeingBuilt = Instantiate(objectPrefab);
-        objectBeingBuilt.transform.position = buildManager.GetMousePoint();
-        objectEnd.transform.position = buildManager.GetMousePoint();
+        objectBeingBuilt.transform.position = BuildHelper.GetMousePoint();
+        objectEnd.transform.position = BuildHelper.GetMousePoint();
         startSet = true;
     }
 
@@ -200,7 +194,7 @@ public class MultiClickObjectBuilder : MonoBehaviour
 
     public void ShowPrice()
     {
-        if (priceTextPrefab != null && price != null)
+        if (priceTextPrefab != null && price > 0)
         {
             UpdatePrice();
             priceText = Instantiate(priceTextPrefab);
@@ -220,9 +214,9 @@ public class MultiClickObjectBuilder : MonoBehaviour
 
     private void UpdatePrice()
     {
-        if(objectStart != null && objectEnd != null && price != null)
+        if(objectStart != null && objectEnd != null && price > 0)
         {
-            priceValue = price.priceOfObject * Vector3.Distance(objectStart.transform.position, objectEnd.transform.position);
+            priceValue = price * Vector3.Distance(objectStart.transform.position, objectEnd.transform.position);
             priceText.SetText(priceValue.ToString("C"));
         }
         else

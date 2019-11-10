@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 7554185823740469136}
   - component: {fileID: -6861225428342425999}
   - component: {fileID: 351804401}
-  - component: {fileID: -150762692381753774}
+  - component: {fileID: -3688063576114027122}
   m_Layer: 0
   m_Name: CheeseMaker
   m_TagString: Untagged
@@ -160,8 +160,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buildOffset: {x: 0, y: 1, z: 0}
-  priceTextPrefab: {fileID: -3458188364397675048, guid: 98abbd940dc5c45b8bf525df42719328,
-    type: 3}
 --- !u!114 &351804401
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -649,7 +647,7 @@ MonoBehaviour:
   m_SelectedFaces: 
   m_SelectedEdges: []
   m_SelectedVertices: 
---- !u!114 &-150762692381753774
+--- !u!114 &-3688063576114027122
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -658,10 +656,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 3007350658564554843}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 87f6cea6592cc4c10abc9c9d3e32ff52, type: 3}
+  m_Script: {fileID: 11500000, guid: 3df322d14ea80462d8be38dfd0c9cb75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  priceOfObject: 350
+  itemName: Cheese Maker
+  price: 350
+  sellPrice: 300
+  isMoveable: 1
+  canPlaceObjectsOn: 0
+  isItemPaid: 0
 --- !u!1 &4713468386283977816
 GameObject:
   m_ObjectHideFlags: 0

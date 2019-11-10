@@ -476,7 +476,7 @@ GameObject:
   - component: {fileID: 1260921643}
   - component: {fileID: 1260921644}
   - component: {fileID: -567014127520287111}
-  - component: {fileID: -6291834511295151491}
+  - component: {fileID: -1725140076518721415}
   m_Layer: 0
   m_Name: MetalCabinet
   m_TagString: Untagged
@@ -592,9 +592,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buildOffset: {x: 0, y: 0, z: 0}
-  priceTextPrefab: {fileID: -3458188364397675048, guid: 98abbd940dc5c45b8bf525df42719328,
-    type: 3}
---- !u!114 &-6291834511295151491
+  price: 150
+  sellPrice: 0
+--- !u!114 &-1725140076518721415
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -603,7 +603,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 3826018606800593152}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 87f6cea6592cc4c10abc9c9d3e32ff52, type: 3}
+  m_Script: {fileID: 11500000, guid: 3df322d14ea80462d8be38dfd0c9cb75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  priceOfObject: 200
+  itemName: Warehouse Shelf
+  price: 150
+  sellPrice: 100
+  isMoveable: 1
+  canPlaceObjectsOn: 0

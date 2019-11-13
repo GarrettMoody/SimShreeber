@@ -4,13 +4,13 @@ using UnityEngine;
 using System.Linq;
 using System;
 
-public class WarehouseShelf : MonoBehaviour
+public class WarehouseShelf : BuildableItem
 {
    
     private List<ShelfSlot> shelfSlots = new List<ShelfSlot>();
     public int shelfSlotsRemaining { get; private set; }
 
-    public static event Action<WarehouseShelf> ShelfBuilt = delegate { };
+    public static event Action<WarehouseShelf>  ShelfBuilt = delegate { };
     public static event Action<WarehouseShelf> ShelfDestroyed = delegate { };
    
     public void OnDestroy()
@@ -25,8 +25,9 @@ public class WarehouseShelf : MonoBehaviour
         ShelfDestroyed(this);
     }
 
-    public void Start()
+    public new void Awake()
     {
+        base.Awake();
         foreach (ShelfSlot slot in this.GetComponentsInChildren<ShelfSlot>())
         {
             shelfSlots.Add(slot);

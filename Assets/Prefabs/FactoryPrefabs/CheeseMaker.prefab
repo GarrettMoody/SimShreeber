@@ -15,9 +15,8 @@ GameObject:
   - component: {fileID: 4713468386175938178}
   - component: {fileID: 4713468386175938179}
   - component: {fileID: 7554185823740469136}
-  - component: {fileID: -6861225428342425999}
   - component: {fileID: 351804401}
-  - component: {fileID: -3688063576114027122}
+  - component: {fileID: -6861225428342425999}
   m_Layer: 0
   m_Name: CheeseMaker
   m_TagString: Untagged
@@ -53,7 +52,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3007350658564554843}
-  m_Mesh: {fileID: 4300000, guid: 3729d92ee2f6e4c3ba1ce8cd63bdfd6b, type: 2}
+  m_Mesh: {fileID: 0}
 --- !u!23 &1923071900793055450
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -104,7 +103,7 @@ MeshCollider:
   serializedVersion: 3
   m_Convex: 0
   m_CookingOptions: 14
-  m_Mesh: {fileID: 4300000, guid: 3729d92ee2f6e4c3ba1ce8cd63bdfd6b, type: 2}
+  m_Mesh: {fileID: 0}
 --- !u!65 &4713468386175938178
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -145,21 +144,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a530136453e164bcd82816eb71e29d78, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  itemName: Cheese Maker
+  price: 450
+  sellPrice: 400
+  isMoveable: 1
+  canPlaceObjectsOn: 0
+  isItemPaid: 0
   objectInstantiator: {fileID: 4713468386283977818}
   cooldownBar: {fileID: 1597042831}
---- !u!114 &-6861225428342425999
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3007350658564554843}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bacdc679d06f24b6ba868fc4faa6362f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  buildOffset: {x: 0, y: 1, z: 0}
 --- !u!114 &351804401
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -647,7 +639,7 @@ MonoBehaviour:
   m_SelectedFaces: 
   m_SelectedEdges: []
   m_SelectedVertices: 
---- !u!114 &-3688063576114027122
+--- !u!114 &-6861225428342425999
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -656,15 +648,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 3007350658564554843}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3df322d14ea80462d8be38dfd0c9cb75, type: 3}
+  m_Script: {fileID: 11500000, guid: bacdc679d06f24b6ba868fc4faa6362f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemName: Cheese Maker
-  price: 350
-  sellPrice: 300
-  isMoveable: 1
-  canPlaceObjectsOn: 0
-  isItemPaid: 0
+  buildOffset: {x: 0, y: 1, z: 0}
 --- !u!1 &4713468386283977816
 GameObject:
   m_ObjectHideFlags: 0
@@ -721,6 +708,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: CooldownBar
+      objectReference: {fileID: 0}
+    - target: {fileID: 379211414768163775, guid: 4f8c57aa9c53e4396b844379be80570a,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 379211414768163772, guid: 4f8c57aa9c53e4396b844379be80570a,
         type: 3}
@@ -826,6 +818,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 379211414856288043, guid: 4f8c57aa9c53e4396b844379be80570a,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4f8c57aa9c53e4396b844379be80570a, type: 3}

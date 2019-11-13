@@ -7,25 +7,16 @@ public class SingleObjectBuilder : MonoBehaviour
 {
     public Vector3 buildOffset;
 
-    private FloatingText priceText;
     private bool isBuilding;
-    private bool isShowingPrice;
-
-    private GameObject clickMenuPrefab;
-    private GameObject priceTextPrefab;
     private BuildableItem item;
-
 
     public void Awake()
     {
-        priceTextPrefab = (GameObject)Resources.Load("Prefabs/FloatingText");
-        clickMenuPrefab = (GameObject)Resources.Load("Prefabs/ObjectClickMenu");
         item = this.GetComponent<BuildableItem>();
-    }
-
-    public void OnDestroy()
-    {
-        UnsubscribeToObjectClickMenu();
+        if(item.isMoveable)
+        {
+            item.contextActions.Add("Move", PickObjectUp);
+        }
     }
 
     // Update is called once per frame
@@ -35,11 +26,6 @@ public class SingleObjectBuilder : MonoBehaviour
         if(isBuilding)
         {
             this.transform.position = BuildHelper.GetMousePoint() + buildOffset;
-
-            if (isShowingPrice)
-            {
-                priceText.transform.position = BuildHelper.GetMousePoint() + new Vector3(0, .2f, 0);
-            }
 
             //Left Click - Place Object
             if (Input.GetMouseButtonDown(0) && !BuildHelper.IsPointerOverGameObject())
@@ -63,59 +49,15 @@ public class SingleObjectBuilder : MonoBehaviour
         }
     }
 
-    public void OnMouseOver()
-    {
-        //On left click on object
-        if (Input.GetMouseButtonDown(1))
-        {
-            //If mouse not over UI component
-            if (!BuildHelper.IsPointerOverGameObject())
-            {
-                //If Context menu exists
-                if (ObjectClickMenu.Instance() != null)
-                {
-                    HideObjectClickMenu();
-                }
-
-                //Create new instance of context menu and subscribe to its events
-                Instantiate(clickMenuPrefab, BuildHelper.GetMousePointGameObject().transform).GetComponent<ObjectClickMenu>();
-                SubscribeToObjectClickMenu();
-            }
-        }
-    }
-
-    private void ObjectClickMenu_SellButtonClicked()
-    {
-        PlayerMoneyManager.Instance().AddMoney(item.sellPrice);
-        Destroy(this.gameObject);
-        HideObjectClickMenu();
-    }
-
-    private void ObjectClickMenu_MoveButtonClicked()
-    {
-        PickObjectUp();
-        HideObjectClickMenu();
-    }
-
-    private void HideObjectClickMenu()
-    {
-        UnsubscribeToObjectClickMenu();
-        if (ObjectClickMenu.Instance().gameObject != null)
-        {
-            ObjectClickMenu.RemoveAllEvents();
-            Destroy(ObjectClickMenu.Instance().gameObject);
-        }
-    }
-
     public void StartBuilding()
     {
-        ShowPrice();
+        item.ShowPrice();
         isBuilding = true;
     }
 
     public void StopBuilding()
     {
-        HidePrice();
+        item.HidePrice();
         isBuilding = false;
     }
 
@@ -129,31 +71,6 @@ public class SingleObjectBuilder : MonoBehaviour
         } else
         {
             return true;
-        }
-    }
-
-    public void SellObject()
-    {
-        Destroy(this.gameObject);
-        PlayerMoneyManager.Instance().AddMoney(item.sellPrice);
-    }
-
-    public void ShowPrice()
-    {
-        if(priceTextPrefab != null && item.price > 0)
-        {
-            priceText = Instantiate(priceTextPrefab).GetComponent<FloatingText>();
-            priceText.SetText(item.price.ToString("C"));
-            isShowingPrice = true;
-        }
-    }
-
-    public void HidePrice()
-    {
-        if(priceText != null)
-        {
-            Destroy(priceText.gameObject);
-            isShowingPrice = false;
         }
     }
 
@@ -195,17 +112,5 @@ public class SingleObjectBuilder : MonoBehaviour
             this.GetComponent<Rigidbody>().isKinematic = true;
         }
         isBuilding = true;
-    }
-
-    private void SubscribeToObjectClickMenu()
-    {
-        ObjectClickMenu.MoveButtonClicked += ObjectClickMenu_MoveButtonClicked;
-        ObjectClickMenu.SellButtonClicked += ObjectClickMenu_SellButtonClicked;
-    }
-
-    private void UnsubscribeToObjectClickMenu()
-    {
-        ObjectClickMenu.MoveButtonClicked -= ObjectClickMenu_MoveButtonClicked;
-        ObjectClickMenu.SellButtonClicked -= ObjectClickMenu_SellButtonClicked;
     }
 }

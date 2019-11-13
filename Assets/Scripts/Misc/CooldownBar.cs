@@ -10,7 +10,7 @@ public class CooldownBar : MonoBehaviour
 
     private float currentCooldownValue;
 
-    public bool isCooling {get; private set;}
+    public bool isCooling { get; private set; }
 
     // Update is called once per frame
     void Update()

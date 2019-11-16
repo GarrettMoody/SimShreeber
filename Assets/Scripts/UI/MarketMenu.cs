@@ -31,6 +31,7 @@ public class MarketMenu : MonoBehaviour
         pricePerCheeseValue = 27.00f;
         pricePerCheese.text = pricePerCheeseValue.ToString("C");
         CalculateTotalPriceValue();
+        UpdateBuyButton();
     }
 
     public void OnBuyButtonClicked()
@@ -42,6 +43,7 @@ public class MarketMenu : MonoBehaviour
             gameManager.warehouseManager.AddPackagesToShelves(cheeseInputValue);
         }
 
+        UpdateBuyButton();
         this.gameObject.SetActive(false);
     }
 
@@ -59,6 +61,10 @@ public class MarketMenu : MonoBehaviour
     public void OnPlusButtonClicked()
     {
         cheeseInputValue++;
+        if(cheeseInputValue > gameManager.warehouseManager.shelfSlotsRemaining)
+        {
+            cheeseInputValue = (int)gameManager.warehouseManager.shelfSlotsRemaining;
+        }
         cheeseInputField.text = cheeseInputValue.ToString();
         CalculateTotalPriceValue();
     }
@@ -69,6 +75,22 @@ public class MarketMenu : MonoBehaviour
         totalPrice.text = totalPriceValue.ToString("C");
     }
 
-
+    private void UpdateBuyButton()
+    {
+        if (cheeseInputValue > gameManager.warehouseManager.shelfSlotsRemaining)
+        {
+            buyButton.GetComponentInChildren<TextMeshProUGUI>().SetText("Inventory Full");
+            buyButton.enabled = false;
+        }
+        else if (totalPriceValue > playerMoney.GetMoney())
+        {
+            buyButton.GetComponentInChildren<TextMeshProUGUI>().SetText("Insufficient Funds");
+            buyButton.enabled = false;
+        } else
+        {
+            buyButton.GetComponentInChildren<TextMeshProUGUI>().SetText("Buy");
+            buyButton.enabled = true;
+        }
+    }
 
 }

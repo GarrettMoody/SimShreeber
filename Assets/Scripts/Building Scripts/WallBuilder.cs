@@ -36,15 +36,15 @@ public class WallBuilder : MonoBehaviour
                 mousePoint = BuildHelper.GetMousePoint();
             }
 
-            
-            mousePoint = new Vector3(mousePoint.x, mousePoint.y + wallStudHeight/2, mousePoint.z);
+
+            mousePoint = new Vector3(mousePoint.x, mousePoint.y + wallStudHeight / 2, mousePoint.z);
 
             //Build hasn't started yet
             if (!startSet)
             {
                 GameObject mouseObject = BuildHelper.GetMousePointGameObject();
 
-                if(mouseObject != null)
+                if (mouseObject != null)
                 {
                     //If pointing to a wall
                     if (buildManager.IsWall(mouseObject))
@@ -106,14 +106,14 @@ public class WallBuilder : MonoBehaviour
                 UpdateWall();
             }
 
-            if (Input.GetMouseButtonDown(0) && !BuildHelper.IsPointerOverGameObject())
+            if (Input.GetMouseButtonDown(0) && !BuildHelper.IsPointerOverUI())
             {
                 if (!startSet)
                 {
                     GameObject mouseObject = BuildHelper.GetMousePointGameObject();
 
                     //Started on Wall
-                    if(buildManager.IsWall(mouseObject))
+                    if (buildManager.IsWall(mouseObject))
                     {
                         //Pointing to wall. Split wall and place new stud
                         Wall mouseWall = BuildHelper.GetMousePointGameObject().GetComponent<Wall>();
@@ -148,7 +148,7 @@ public class WallBuilder : MonoBehaviour
                     GameObject mouseObject = BuildHelper.GetMousePointGameObject();
 
                     //Ended on Wall
-                    if(buildManager.IsWall(mouseObject))
+                    if (buildManager.IsWall(mouseObject))
                     {
                         //Pointing to wall. Split wall and place new stud
                         Wall mouseWall = BuildHelper.GetMousePointGameObject().GetComponent<Wall>();
@@ -158,11 +158,11 @@ public class WallBuilder : MonoBehaviour
                         //Create new walls
                         CreateNewWall(previousWallStart, wallEnd);
                         CreateNewWall(wallEnd, previousWallEnd);
-                    
+
                         Destroy(mouseWall.gameObject);
                     }
                     //Ended on Stud
-                    else if(buildManager.IsWallStud(mouseObject))
+                    else if (buildManager.IsWallStud(mouseObject))
                     {
                         Destroy(wallEnd.gameObject);
                         wallEnd = BuildHelper.GetMousePointGameObject().GetComponent<WallStud>();
@@ -195,11 +195,11 @@ public class WallBuilder : MonoBehaviour
     public void StopBuilding()
     {
         isBuilding = false;
-        if(wallStart != null)
+        if (wallStart != null)
         {
             wallStart.gameObject.GetComponent<BoxCollider>().enabled = true;
         }
-        if(wallEnd != null)
+        if (wallEnd != null)
         {
             wallEnd.gameObject.GetComponent<BoxCollider>().enabled = true;
         }
@@ -230,7 +230,7 @@ public class WallBuilder : MonoBehaviour
         float distance = Vector3.Distance(newWall.wallStart.transform.position, newWall.wallEnd.transform.position);
         newWall.transform.position = newWall.wallStart.transform.position + distance / 2 * newWall.wallStart.transform.forward;
         newWall.transform.LookAt(newWall.wallStart.transform);
-        newWall.transform.localScale = new Vector3(newWall.transform.localScale.x, newWall.transform.localScale.y, distance/3);
+        newWall.transform.localScale = new Vector3(newWall.transform.localScale.x, newWall.transform.localScale.y, distance / 3);
 
         newWall.GetComponent<BoxCollider>().enabled = true;
         newWall.wallStart.GetComponent<BoxCollider>().enabled = true;
@@ -281,7 +281,7 @@ public class WallBuilder : MonoBehaviour
     }
 
     public void SetStart(WallStud wallStartValue)
-    { 
+    {
         wallStart = wallStartValue;
         wallStart.GetComponent<BoxCollider>().enabled = true;
         wallEnd = Instantiate(wallStudPrefab);

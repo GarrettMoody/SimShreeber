@@ -76,7 +76,7 @@ public class BuildableItem : MonoBehaviour
         if (Input.GetMouseButtonDown(1))
         {
             //If mouse not over UI component
-            if (!BuildHelper.IsPointerOverGameObject())
+            if (!BuildHelper.IsPointerOverUI())
             {
                 //Create new instance of context menu and subscribe to its events
                 Instantiate(clickMenuPrefab, BuildHelper.GetMousePointGameObject().transform);

@@ -18,11 +18,11 @@ public class BuildManager : MonoBehaviour
     public DoorBuilder doorBuilder;
     public MultiClickObjectBuilder multiClickObjectBuilder;
 
-	public static float gridSize;
+    public static float gridSize;
 
     public static float GetGridSize() { return gridSize; }
     public TextMeshProUGUI snapText;
-     
+
     public GameObject floor;
     public Material floorNormalMaterial;
     public Material floorBuildingMaterial;
@@ -50,7 +50,7 @@ public class BuildManager : MonoBehaviour
 
         if (isDeleting)
         {
-            if (Input.GetMouseButtonDown(0) && !BuildHelper.IsPointerOverGameObject())
+            if (Input.GetMouseButtonDown(0) && !BuildHelper.IsPointerOverUI())
             {
                 if (BuildHelper.GetMousePointGameObject().name != "Floor")
                 {
@@ -83,15 +83,15 @@ public class BuildManager : MonoBehaviour
 
         floor.GetComponent<Renderer>().material = floorNormalMaterial;
 
-        if(wallBuilder.IsBuilding())
+        if (wallBuilder.IsBuilding())
         {
             wallBuilder.StopBuilding();
         }
-        if(doorBuilder.IsBuilding())
+        if (doorBuilder.IsBuilding())
         {
             doorBuilder.StopBuilding();
         }
-        if(multiClickObjectBuilder.IsBuilding())
+        if (multiClickObjectBuilder.IsBuilding())
         {
             multiClickObjectBuilder.StopBuilding();
         }
@@ -103,7 +103,7 @@ public class BuildManager : MonoBehaviour
 
     public void UpdateSnapToGridText()
     {
-        if(isBuilding)
+        if (isBuilding)
         {
             if (snapToGridToggle)
             {
@@ -155,10 +155,11 @@ public class BuildManager : MonoBehaviour
     public void OnDeleteButtonClicked()
     {
         StartBuilding();
-        if(wallBuilder.IsBuilding())
+        if (wallBuilder.IsBuilding())
         {
             wallBuilder.StopBuilding();
-        } else if(doorBuilder.IsBuilding())
+        }
+        else if (doorBuilder.IsBuilding())
         {
             doorBuilder.StopBuilding();
         }
@@ -166,7 +167,7 @@ public class BuildManager : MonoBehaviour
     }
 
 
-   
+
 
     public bool IsWall(GameObject gameObject)
     {

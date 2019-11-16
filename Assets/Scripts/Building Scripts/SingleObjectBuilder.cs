@@ -28,7 +28,7 @@ public class SingleObjectBuilder : MonoBehaviour
             this.transform.position = BuildHelper.GetMousePoint() + buildOffset;
 
             //Left Click - Place Object
-            if (Input.GetMouseButtonDown(0) && !BuildHelper.IsPointerOverGameObject())
+            if (Input.GetMouseButtonDown(0) && !BuildHelper.IsPointerOverUI())
             {
                 if(CanBuild())
                 {

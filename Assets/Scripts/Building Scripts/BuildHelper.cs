@@ -56,7 +56,7 @@ public static class BuildHelper
         return result;
     }
 
-    public static bool IsPointerOverGameObject()
+    public static bool IsPointerOverUI()
     {
         return EventSystem.current.IsPointerOverGameObject();
     }

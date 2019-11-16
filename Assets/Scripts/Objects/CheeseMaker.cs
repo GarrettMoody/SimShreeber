@@ -37,7 +37,7 @@ public class CheeseMaker : BuildableItem
 
     public void OnMouseUpAsButton()
     {
-        if(!BuildHelper.IsPointerOverGameObject())
+        if(!BuildHelper.IsPointerOverUI())
         {
             bool canMakeCheese = MakeCheeseRequest();
             if (canMakeCheese)

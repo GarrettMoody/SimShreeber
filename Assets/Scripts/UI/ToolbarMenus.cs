@@ -14,29 +14,37 @@ public class ToolbarMenus : MonoBehaviour
     {
         CloseAllMenus();
         buildMenu.SetActive(true);
+        GameManager.MouseClicked += GameManager_MouseClicked;
+    }
 
+    private void GameManager_MouseClicked()
+    {
+        if(!BuildHelper.IsPointerOverUI())
+        {
+            CloseAllMenus();
+        }
     }
 
     public void OpenFurnitureMenu()
     {
         CloseAllMenus();
         furnitureMenu.SetActive(true);
+        GameManager.MouseClicked += GameManager_MouseClicked;
     }
 
     public void OpenMarketMenu()
     {
         CloseAllMenus();
         marketMenu.SetActive(true);
-    }
+        GameManager.MouseClicked += GameManager_MouseClicked;
 
-    public void CloseBuildMenu()
-    {
-        buildMenu.SetActive(false);
     }
 
     public void CloseAllMenus()
     {
-        CloseBuildMenu();
+        buildMenu.SetActive(false);
         furnitureMenu.SetActive(false);
+        marketMenu.SetActive(false);
+        GameManager.MouseClicked -= GameManager_MouseClicked;
     }
 }

@@ -14,8 +14,24 @@ public class ObjectClickMenu : MonoBehaviour
         if(instance != null)
         {
             CloseObjectClickMenu();
+        } else
+        {
+            instance = this;
+            GameManager.MouseClicked += GameManager_MouseClicked;
         }
-        instance = this;
+    }
+
+    public void OnDestroy()
+    {
+        GameManager.MouseClicked -= GameManager_MouseClicked;
+    }
+
+    private void GameManager_MouseClicked()
+    {
+        if(BuildHelper.GetMousePointGameObject() != instance.gameObject)
+        {
+            CloseObjectClickMenu();
+        }
     }
 
     public static ObjectClickMenu Instance()
